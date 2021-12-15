@@ -1,0 +1,8 @@
+.icon-delete {
+  display: inline-block;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url(../icons/delete.png);
+  background-position: center;
+  cursor: pointer;
+}

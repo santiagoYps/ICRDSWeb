@@ -1,13 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../static/style/bulma.min.css">
-  <title>{{ title }}</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../static/style/bulma.min.css">
+	<link rel="stylesheet" href="../static/style/index.css">
+	<title>{{ title }}</title>
 </head>
+
 <body>
-  <h1>Trips</h1>
+	<header>
+		<section class="hero is-primary is-small block">
+			<div class="hero-body">
+				<p class="title">
+					Informacion recolectada en trayectos
+				</p>
+			</div>
+		</section>
+	</header>
+	<main>
+		<section class="section py-1">
+			<div class="tabs is-centered is-boxed">
+				<ul id="tabs">
+					<li class="is-active" data-device="smartphone"><a>Smartphone</a></li>
+					<li data-device="raspberry"><a>Raspberry</a></li>
+				</ul>
+			</div>
+			<div class="card table-container is-centered table-background-color">
+				<table class="table is-hoverable is-fullwidth" data-tab="smartphone">
+					<thead>
+						<tr class="has-background-info-light">
+							<th class="has-text-info-dark">Fecha</th>
+							<th class="has-text-info-dark">Datos cinemáticos</th>
+							<th class="has-text-info-dark">Id del Vehículo</th>
+							<th class="has-text-info-dark">Opciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for trip in smartphoneTrips  %}
+						<tr>
+							<th>{{ trip.date }}</th>
+							<td>{{ trip.kinematicData }}</td>
+							<td>{{ trip.vehicle }}</td>
+							<td>
+								<span class="icon icon-delete"></span>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>		
+			
+				<table class="table is-hoverable is-fullwidth is-hidden" data-tab="raspberry">
+					<thead>
+						<tr class="has-background-info-light">
+							<th class="has-text-info-dark">Fecha</th>
+							<th class="has-text-info-dark">Datos cinemáticos</th>
+							<th class="has-text-info-dark">Id del Vehículo</th>
+							<th class="has-text-info-dark">Opciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for trip in raspberryTrips  %}
+						<tr>
+							<th>{{ trip.date }}</th>
+							<td>{{ trip.kinematicData }}</td>
+							<td>{{ trip.vehicle }}</td>
+							<td>
+								<span class="icon icon-delete"></span>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			
+		</section>
+	</main>
+	<script src="../static/js/index.js"></script>
 </body>
 </html>
