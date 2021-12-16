@@ -29,7 +29,7 @@
 				</ul>
 			</div>
 			<div class="card table-container is-centered table-background-color">
-				<table class="table is-hoverable is-fullwidth" data-tab="smartphone">
+				<table class="table is-hoverable is-fullwidth mb-0" data-tab="smartphone">
 					<thead>
 						<tr class="has-background-info-light">
 							<th class="has-text-info-dark">Fecha</th>
@@ -39,15 +39,18 @@
 						</tr>
 					</thead>
 					<tbody>
-						{% for trip in smartphoneTrips  %}
-						<tr>
-							<th>{{ trip.date }}</th>
-							<td>{{ trip.kinematicData }}</td>
-							<td>{{ trip.vehicle }}</td>
-							<td>
-								<span class="icon icon-delete"></span>
-							</td>
-						</tr>
+						{% for key,value in trips.items()  %}
+							{% if value['device'] == 'Smartphone' %}
+							<tr id="{{ key }}" data-href="./trips/details/{{key}}">
+								<th>{{ value['date'] }}</th>
+								<td>{{ value['kinematicData'] }}</td>
+								<td>{{ value['vehicle'] }}</td>
+								<td>
+									<span class="icon icon-image icon-delete" data-item="{{ key }}"></span>
+									<a class="icon icon-image icon-details" href="./trips/details/{{ key }}"></a>
+								</td>
+							</tr>
+							{% endif %}
 						{% endfor %}
 					</tbody>
 				</table>		
@@ -62,21 +65,42 @@
 						</tr>
 					</thead>
 					<tbody>
-						{% for trip in raspberryTrips  %}
-						<tr>
-							<th>{{ trip.date }}</th>
-							<td>{{ trip.kinematicData }}</td>
-							<td>{{ trip.vehicle }}</td>
-							<td>
-								<span class="icon icon-delete"></span>
-							</td>
-						</tr>
+						{% for key,value in trips.items()  %}
+							{% if value['device'] == 'Raspberry' %}
+							<tr id="{{ key }}">
+								<th>{{ value['date'] }}</th>
+								<td>{{ value['kinematicData'] }}</td>
+								<td>{{ value['vehicle'] }}</td>
+								<td>
+									<span class="icon icon-image icon-delete" data-item="{{ key }}"></span>
+									<span class="icon icon-image icon-details" data-item="{{ key }}"></span>
+								</td>
+							</tr>
+							{% endif %}
 						{% endfor %}
 					</tbody>
 				</table>
 			</div>
-			
 		</section>
+		<div id="modal-confirmation" class="modal">
+			<div class="modal-background"></div>
+			<div class="modal-content">
+				<article class="message is-danger">
+					<div class="message-body has-background-white">
+						<p>¿Esta seguro de eliminar este trayecto?</p>
+						<div class="buttons mt-3">
+							<button class="button is-light is-small" data-cancel>Cancelar</button>
+							<button class="button is-danger is-small" data-delete>Eliminar</button>
+						</div>
+					</div>
+				</article>
+			</div>
+			<button class="modal-close is-large" aria-label="close"></button>
+		</div>
+		<div id="notification" class="notification is-light custom-notification is-hidden">
+			<button class="delete"></button>
+			<p></p>			
+		</div>
 	</main>
 	<script src="../static/js/index.js"></script>
 </body>
