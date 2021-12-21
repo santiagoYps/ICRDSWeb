@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/static/styles/css/bulma.min.css">
+</head>
+
+<body>
+    <section class="hero is-primary is-small block">
+        <div class="hero-body">
+            <p class="title">
+                Visualize Data
+            </p>
+        </div>
+    </section>
+    <section class="section py-0">
+        <h1 class="title">Seleccionar grafico y variable</h1>
+        <div class="columns">
+            <div class="column">
+                <label class="label">Grafico:</label>
+                <div id="dropdown-chart" data-btn="dropdown-chart-btn" class="dropdown">
+                    <div class="dropdown-trigger">
+                        <button id="dropdown-chart-btn" class="button" aria-haspopup="true" aria-controls="dropdown-menu3">
+                            Seleccionar
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+                        <div class="dropdown-content">
+                            <a href="#" class="dropdown-item">
+                                Lineal
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                De barras
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                De pastel
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                Punteado
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <label class="label">Variable:</label>
+                <div id="dropdown-variable" data-btn="dropdown-variable-btn" class="dropdown">
+                    <div class="dropdown-trigger">
+                        <button id="dropdown-variable-btn" class="button" aria-haspopup="true" aria-controls="dropdown-menu3">
+                            Seleccionar
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+                        <div class="dropdown-content">
+                            <a href="#" class="dropdown-item">
+                                Velocidad
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                Presión del freno
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                Acceleración en X
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                Acceleración en Y
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                Acceleración en Z
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                Velocidad angular en X
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                Velocidad angular en Y
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                Velocidad angular en Z
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                Fuerza magnética en X
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                Fuerza magnética en Y
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                Fuerza magnética en Z
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box mb-6">
+            <!--<h1>Line chart from trip {{ trip }}</h1>-->
+            <div id='chart' class='chart' ”></div>
+        </div>
+        <div></div>
+    </section>
+</body>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+    var graphs = {{ graphJSON | safe }};
+    Plotly.plot('chart', graphs, {});
+</script>
+<script src="/static/js/charts.js"></script>
+
+</html>
