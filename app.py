@@ -19,37 +19,29 @@ firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://vehicledatacollected-default-rtdb.firebaseio.com/'
 })
 
-def line_chart(df):
-    near_crash_df = df.copy()
-    no_crash_df = df.copy()
-    variable = "accY"
-    x = df['timestamp']
-    # Filter colums for eventClass
-    near_crash_df.loc[df['eventClass'] == 0, variable] = None
-    no_crash_df.loc[df['eventClass'] == 1, variable] = None
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=x,
-        y = no_crash_df[variable],
-        name = 'No event',
-        marker_color='#00D1B1'
-        #connectgaps=True # override default to connect the gaps
-    ))
-    fig.add_trace(go.Scatter(
-        x=x,
-        y=near_crash_df[variable],
-        name='Near Crash',
-        marker_color='#FF385F'
-    ))
+variables_dict = {'speed':'Velocidad','breakPosition':'Presión del freno',
+                  'accX':'Aceleración en X', 'accY':'Aceleración en Y', 'accZ':'Aceleración en Z',
+                  'magX':'Fuerza magnética en X','magY':'Fuerza magnética en Y','magZ':'Fuerza magnética en Z',
+                  'velAngX':'Velocidad angular en X','velAngY':'Velocidad angular en Y','velAngZ':'Velocidad angular en Z'}
+units_dict = {'speed':'m/s','breakPosition':'% de presión',
+              'accX':'m/s\u00B2', 'accY':'m/s\u00B2', 'accZ':'m/s\u00B2',
+              'magX':'\u03BC T','magY':'\u03BC T','magZ':'\u03BC T',
+              'velAngX':'rad/seg','velAngY':'rad/seg','velAngZ':'rad/seg'}
+
+def update_layout(fig, chart_title:str, **kwargs):
+    
+    x_title= kwargs.get('xaxis_title', None)
+    y_title= kwargs.get('yaxis_title', None)
+    height_size = kwargs.get('height', 450)
     
     fig.update_layout(
-        title='Line Chart',
-        xaxis_title='Marca de Tiempo',
-        yaxis_title=variable,
+        title={'text':chart_title, 'x':0.5},
         legend_title='Tipo de evento',
+        xaxis_title=x_title,
+        yaxis_title=y_title,
         template='plotly_white',
         autosize=True,
-        height=450,
+        height= height_size,
         font=dict(
             family="BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen,Ubuntu, \
                     Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif",
@@ -57,6 +49,35 @@ def line_chart(df):
             color="#363636"
         )
     )
+    
+    return fig
+
+def line_chart(df):
+    variable = "accY"
+    
+    near_crash_df = df.copy()
+    no_crash_df = df.copy()
+    x = df['timestamp']
+    # Filter colums for eventClass
+    near_crash_df.loc[df['eventClass'] == 0, variable] = None # Set all normal events to NaN
+    no_crash_df.loc[df['eventClass'] == 1, variable] = None # Set all near-crash events to NaN
+    
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=x,
+        y = no_crash_df[variable],
+        name = 'Sin evento',
+        marker_color='#00D1B1'
+    ))
+    fig.add_trace(go.Scatter(
+        x=x,
+        y=near_crash_df[variable],
+        name='Near-Crash',
+        marker_color='#FF385F'
+    ))
+    
+    fig = update_layout(fig, f'Gráfico de linea de la {variables_dict[variable]}', 
+                        xaxis_title= 'Marca de Tiempo', yaxis_title=units_dict[variable])
     fig.update_yaxes(nticks=12)
     fig.update_xaxes(nticks=12, tickangle=45)
     
@@ -71,18 +92,33 @@ def pie_chart(df):
                  color_discrete_map={'Sin evento':'#00D1B1',
                                      'Near-Crash':'#FF385F'})
     fig.update_traces(textposition='inside', textinfo='percent+label')
-    fig.update_layout(
-        title={'text':'Porcentaje de eventos detectados en el viaje', 'x':0.5},
-        legend_title='Tipo de evento',
-        template="plotly_white",
-        autosize=True,
-        height=450,
-        font=dict(
-            family="BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen,Ubuntu, \
-                Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif",
-            size=14,
-            color='#363636'))
+    fig = update_layout(fig, 'Porcentaje de eventos detectados en el viaje')
     
+    return fig
+
+def histogram_chart(df):
+    variable = "velAngX"
+    
+    df['eventClass'].replace([0,1],['Sin evento', 'Near-Crash'], inplace=True)
+    
+    fig = px.histogram(df, x=variable, color="eventClass", marginal="box", nbins=35, barmode="overlay",
+                       color_discrete_map={'Sin evento':'#00D1B1',
+                                           'Near-Crash':'#FF385F'})
+    fig = update_layout(fig, f'Histograma de la {variables_dict[variable]}', xaxis_title=units_dict[variable], yaxis_title='Repeticiones')
+    fig.update_xaxes(nticks=12, tickangle=45)
+    
+    return fig
+
+def scatter_matrix_chart(df):
+    
+    df['eventClass'].replace([0,1],['Sin evento', 'Near-Crash'], inplace=True)
+    
+    # TODO: add the other values speed, pedal position, etc.
+    fig = px.scatter_matrix(df, dimensions=["accX", "accY", "accZ", "magX", "magY", "magZ", "velAngX", "velAngY", "velAngZ"],
+                            color="eventClass", symbol="eventClass",
+                            color_discrete_map={'Sin evento':'#00D1B1',
+                                                'Near-Crash':'#FF385F'})
+    fig = update_layout(fig, 'Matriz de dipsersión',height=1000)
     return fig
 
 @app.route("/")
@@ -106,7 +142,9 @@ def trip_details(id):
     df["timestamp"] = pd.to_datetime(df['timestamp'], unit='s')
     
     #fig = line_chart(df)
-    fig = pie_chart(df)
+    #fig = pie_chart(df)
+    #fig = histogram_chart(df)
+    fig = scatter_matrix_chart(df)
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     data = {
         "trip": trip_name,
