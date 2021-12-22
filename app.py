@@ -23,10 +23,10 @@ def line_chart(df):
     near_crash_df = df.copy()
     no_crash_df = df.copy()
     variable = "accY"
-    x = df["timestamp"]
+    x = df['timestamp']
     # Filter colums for eventClass
-    near_crash_df.loc[df["eventClass"] == 0, variable] = None
-    no_crash_df.loc[df["eventClass"] == 1, variable] = None
+    near_crash_df.loc[df['eventClass'] == 0, variable] = None
+    no_crash_df.loc[df['eventClass'] == 1, variable] = None
     fig = go.Figure()
     fig.add_trace(go.Scatter(
         x=x,
@@ -43,13 +43,13 @@ def line_chart(df):
     ))
     
     fig.update_layout(
-        title="Line Chart",
-        xaxis_title="Marca de Tiempo",
+        title='Line Chart',
+        xaxis_title='Marca de Tiempo',
         yaxis_title=variable,
-        legend_title="Tipo de evento",
-        template="plotly_white",
+        legend_title='Tipo de evento',
+        template='plotly_white',
         autosize=True,
-        height=600,
+        height=450,
         font=dict(
             family="BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen,Ubuntu, \
                     Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif",
@@ -59,6 +59,29 @@ def line_chart(df):
     )
     fig.update_yaxes(nticks=12)
     fig.update_xaxes(nticks=12, tickangle=45)
+    
+    return fig
+
+def pie_chart(df):
+    df.rename(columns={'eventClass':'Tipo de Evento'}, inplace=True)
+    df['Cantidad'] = 1
+    df['Tipo de Evento'].replace([0,1],['Sin evento', 'Near-Crash'], inplace=True)
+    
+    fig = px.pie(df, values='Cantidad', names='Tipo de Evento', color='Tipo de Evento',
+                 color_discrete_map={'Sin evento':'#00D1B1',
+                                     'Near-Crash':'#FF385F'})
+    fig.update_traces(textposition='inside', textinfo='percent+label')
+    fig.update_layout(
+        title={'text':'Porcentaje de eventos detectados en el viaje', 'x':0.5},
+        legend_title='Tipo de evento',
+        template="plotly_white",
+        autosize=True,
+        height=450,
+        font=dict(
+            family="BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen,Ubuntu, \
+                Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif",
+            size=14,
+            color='#363636'))
     
     return fig
 
@@ -82,7 +105,8 @@ def trip_details(id):
     df = pd.read_csv("./data/raspberry_-Mqwa3JkKT8ny9lxOPnm_data.csv")
     df["timestamp"] = pd.to_datetime(df['timestamp'], unit='s')
     
-    fig = line_chart(df)
+    #fig = line_chart(df)
+    fig = pie_chart(df)
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     data = {
         "trip": trip_name,

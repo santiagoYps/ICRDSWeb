@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"></html>
+<html lang="es"></html>
 <html>
 
 <head>
@@ -13,7 +13,7 @@
     <section class="hero is-primary is-small block">
         <div class="hero-body">
             <p class="title">
-                Visualize Data
+                Visualización de datos
             </p>
         </div>
     </section>
@@ -94,18 +94,17 @@
                 </div>
             </div>
         </div>
-        <div class="box mb-6">
-            <!--<h1>Line chart from trip {{ trip }}</h1>-->
-            <div id='chart' class='chart' ”></div>
+        <div class="box ml-0 mb-6">
+            <div id='chart' class="chart"><!-- Plotly chart will be drawn here--></div>
         </div>
-        <div></div>
     </section>
 </body>
 
 <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 <script type='text/javascript'>
     var graphs = {{ graphJSON | safe }};
-    Plotly.plot('chart', graphs, {});
+    var config = {responsive: true};
+    Plotly.newPlot('chart', graphs, config, {});
 </script>
 <script src="/static/js/charts.js"></script>
 
