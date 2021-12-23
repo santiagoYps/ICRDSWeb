@@ -104,7 +104,8 @@ def histogram_chart(df):
     fig = px.histogram(df, x=variable, color="eventClass", marginal="box", nbins=35, barmode="overlay",
                        color_discrete_map={'Sin evento':'#00D1B1',
                                            'Near-Crash':'#FF385F'})
-    fig = update_layout(fig, f'Histograma de la {variables_dict[variable]}', xaxis_title=units_dict[variable], yaxis_title='Repeticiones')
+    fig = update_layout(fig, f'Histograma de la {variables_dict[variable]}',
+                        xaxis_title=units_dict[variable], yaxis_title='Repeticiones')
     fig.update_xaxes(nticks=12, tickangle=45)
     
     return fig
@@ -114,7 +115,9 @@ def scatter_matrix_chart(df):
     df['eventClass'].replace([0,1],['Sin evento', 'Near-Crash'], inplace=True)
     
     # TODO: add the other values speed, pedal position, etc.
-    fig = px.scatter_matrix(df, dimensions=["accX", "accY", "accZ", "magX", "magY", "magZ", "velAngX", "velAngY", "velAngZ"],
+    fig = px.scatter_matrix(df, dimensions=["accX", "accY", "accZ",
+                                            "magX", "magY", "magZ",
+                                            "velAngX", "velAngY", "velAngZ"],
                             color="eventClass", symbol="eventClass",
                             color_discrete_map={'Sin evento':'#00D1B1',
                                                 'Near-Crash':'#FF385F'})
