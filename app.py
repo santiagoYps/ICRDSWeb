@@ -19,10 +19,9 @@ firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://vehicledatacollected-default-rtdb.firebaseio.com/'
 })
 
-def line_chart(df):
+def line_chart(df, variable):
     near_crash_df = df.copy()
     no_crash_df = df.copy()
-    variable = "accY"
     x = df['timestamp']
     # Filter colums for eventClass
     near_crash_df.loc[df['eventClass'] == 0, variable] = None
@@ -85,6 +84,7 @@ def pie_chart(df):
     
     return fig
 
+
 @app.route("/")
 def query_trips():
     ref = db.reference('/tripList')
@@ -97,38 +97,48 @@ def query_trips():
     }
     return render_template('index.html', **data)
 
-@app.route("/trips/details/<id>", methods=["GET"])
-def trip_details(id):
-    
-    #trip_name = str(id)
-    trip_name = "-Mqwa3JkKT8ny9lxOPnm"
-    df = pd.read_csv("./data/raspberry_-Mqwa3JkKT8ny9lxOPnm_data.csv")
-    df["timestamp"] = pd.to_datetime(df['timestamp'], unit='s')
-    
-    #fig = line_chart(df)
-    fig = pie_chart(df)
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    data = {
-        "trip": trip_name,
-        "graphJSON": graphJSON
-    }
-    # TODO: Reconocer el grafico line,chart,pie, etc
-    
-    if request.method == 'POST':
-        req = request.get_json()
+
+@app.route("/trips/details/<id>", methods=["GET", "POST"])
+def trip_details(id):    
+    if request.method == 'GET':
+        ref = db.reference('/tripList/' + str(id))
+        trip = ref.get()
         
-        if req["chart"] == "line":
-            graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-            data = {
-                "trip": trip_name,
-                "graphJSON": graphJSON
-            }
-            return render_template('charts.html', **data)
-        else:
-            return render_template('charts.html', **data)
-        
-    else:
+        trip_name = "-Mqwa3JkKT8ny9lxOPnm"
+        data = {
+            "trip": trip_name,
+            "tripId": id,
+            **trip
+        }
         return render_template('charts.html', **data)
+        
+    elif request.method == 'POST':
+        request_data = request.get_json()
+        graphType = request_data['graph']
+        variable = request_data['variable']
+
+        #TODO: Obtener datos de firebase como dataframe
+        df = pd.read_csv("./data/raspberry_-Mqwa3JkKT8ny9lxOPnm_data.csv")
+        df["timestamp"] = pd.to_datetime(df['timestamp'], unit='s')
+
+        # TODO: Reconocer graficos restantes
+        fig = None
+        if graphType == 'lineal':
+            fig = line_chart(df, variable)
+        elif graphType == 'pie':        
+            fig = pie_chart(df)
+        else:
+            res = make_response(json.dumps({"code": 400, "error": "Invalid fields"}), 400)
+            res.headers['Content-Type'] = 'application/json'
+            return res
+
+        graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        return graphJSON
+    
+    else:
+        res = make_response(json.dumps({"code": 404, "error": "NOT FOUND"}), 404)
+        res.headers['Content-Type'] = 'application/json'
+        return res
 
 
 @app.route("/removeTrip", methods=["DELETE"])

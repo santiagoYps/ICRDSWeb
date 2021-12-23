@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="es"></html>
+<html lang="es">
+
+</html>
 <html>
 
 <head>
@@ -7,105 +9,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ title }}</title>
     <link rel="stylesheet" href="/static/styles/css/bulma.min.css">
+    <link rel="stylesheet" href="/static/styles/css/charts.css">
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 </head>
 
 <body>
     <section class="hero is-primary is-small block">
-        <div class="hero-body">
-            <p class="title">
-                Visualización de datos
-            </p>
+        <div class="hero-body level">
+            <div class="level-left">
+                <a class="level-item icon icon-image icon-back" href="/"></a>
+                <p class="level-item title">
+                    Visualización de datos
+                </p>
+            </div>
         </div>
     </section>
+
     <section class="section py-0">
-        <h1 class="title">Seleccionar grafico y variable</h1>
-        <div class="columns">
-            <div class="column">
-                <label class="label">Grafico:</label>
-                <div id="dropdown-chart" data-btn="dropdown-chart-btn" class="dropdown">
-                    <div class="dropdown-trigger">
-                        <button id="dropdown-chart-btn" class="button" aria-haspopup="true" aria-controls="dropdown-menu3">
-                            Seleccionar
-                        </button>
-                    </div>
-                    <div class="dropdown-menu" id="dropdown-menu3" role="menu">
-                        <div class="dropdown-content">
-                            <a href="#" class="dropdown-item">
-                                Lineal
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                De barras
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                De pastel
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                Punteado
-                            </a>
-                        </div>
-                    </div>
+        <div class="level">
+            <h2 class="level-left title is-4 mb-0">Información de trayecto</h2>
+            <button class="level-right button is-info is-light">
+                <span>Descargar CSV</span>
+                <span class="icon icon-image icon-download">
+                </span>
+              </button>
+        </div>
+        
+        <div class="level box" id="trip-info" data-trip-id="{{ tripId }}">
+            <div class="level-item has-text-centered">
+                <div>
+                    <p class="heading">Fecha:</p>
+                    <p class="title is-5 has-text-info">{{ date }}</p>
                 </div>
             </div>
-            <div class="column">
-                <label class="label">Variable:</label>
-                <div id="dropdown-variable" data-btn="dropdown-variable-btn" class="dropdown">
-                    <div class="dropdown-trigger">
-                        <button id="dropdown-variable-btn" class="button" aria-haspopup="true" aria-controls="dropdown-menu3">
-                            Seleccionar
-                        </button>
-                    </div>
-                    <div class="dropdown-menu" id="dropdown-menu3" role="menu">
-                        <div class="dropdown-content">
-                            <a href="#" class="dropdown-item">
-                                Velocidad
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                Presión del freno
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                Acceleración en X
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                Acceleración en Y
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                Acceleración en Z
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                Velocidad angular en X
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                Velocidad angular en Y
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                Velocidad angular en Z
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                Fuerza magnética en X
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                Fuerza magnética en Y
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                Fuerza magnética en Z
-                            </a>
-                        </div>
-                    </div>
+            <div class="level-item has-text-centered">
+                <div>
+                    <p class="heading">Dispositivo:</p>
+                    <p class="title is-5 has-text-info">{{ device }}</p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered">
+                <div>
+                    <p class="heading">Datos cinemáticos</p>
+                    <p class="title is-5 has-text-info">{{ kinematicData }}</p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered">
+                <div>
+                    <p class="heading">Vehículo</p>
+                    <p class="title is-5 has-text-info">{{ vehicle }}</p>
                 </div>
             </div>
         </div>
+    </section>
+
+    <section class="section">
+        <h2 class="title is-4">Seleccionar grafico y variable</h2>
+        <div class="columns is-flex">
+            <div class="column">
+                <div class="field">
+                    <label class="label">Grafico:</label>
+                    <div class="control">
+                        <div class="select is-info" id="graph-select">
+                            <select>
+                                <option selected disabled>Seleccionar</option>
+                                <option value="lineal">Lineal</option>
+                                <option value="histogram">Histograma</option>
+                                <option value="pie">De pastel</option>
+                                <option value="scatter">Diagrama de dispersión</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="field">
+                    <label class="label">Variable:</label>
+                    <div class="control">
+                        <div class="select is-info" id="variable-select">
+                            <select>
+                                <option selected disabled>Seleccionar</option>
+                                <option value="speed">Velocidad</option>
+                                <option value="breakPosition">Presión del freno</option>
+                                <option value="accX">Acceleración en X</option>
+                                <option value="accY">Acceleración en Y</option>
+                                <option value="accZ">Acceleración en Z</option>
+                                <option value="velAngX">Velocidad angular en X</option>
+                                <option value="velAngY">Velocidad angular en Y</option>
+                                <option value="velAngZ">Velocidad angular en Z</option>
+                                <option value="magX">Fuerza magnética en X</option>
+                                <option value="magY">Fuerza magnética en Y</option>
+                                <option value="magZ">Fuerza magnética en Z</option>
+                            </select>
+                        </div>
+                        <p class="help has-text-info is-hidden"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column is-align-self-flex-end">
+                <button class="button is-primary" id="graph-btn">Graficar</button>
+            </div>
+        </div>
+        <p class="help has-text-danger is-hidden" id="error-msg">Por favor, seleccione un tipo de gráfico y una variable (si corresponde).</p>
+
+
         <div class="box ml-0 mb-6">
-            <div id='chart' class="chart"><!-- Plotly chart will be drawn here--></div>
+            <div id='chart' class="chart">
+                <!-- Plotly chart will be drawn here-->
+            </div>
         </div>
     </section>
 </body>
 
-<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-<script type='text/javascript'>
-    var graphs = {{ graphJSON | safe }};
-    var config = {responsive: true};
-    Plotly.newPlot('chart', graphs, config, {});
-</script>
 <script src="/static/js/charts.js"></script>
 
 </html>

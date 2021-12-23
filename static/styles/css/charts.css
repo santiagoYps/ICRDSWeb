@@ -1,0 +1,18 @@
+.icon-image {
+  display: inline-block;
+  margin-right: 10px;
+  width: 2rem;
+  height: 2rem;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+.icon-back {
+  background-image: url(../../icons/back.png);
+}
+
+.icon-download {
+  background-image: url(../../icons/download.png);
+}
