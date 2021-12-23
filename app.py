@@ -28,6 +28,15 @@ units_dict = {'speed':'m/s','breakPosition':'% de presión',
               'magX':'\u03BC T','magY':'\u03BC T','magZ':'\u03BC T',
               'velAngX':'rad/seg','velAngY':'rad/seg','velAngZ':'rad/seg'}
 
+def create_df(rows):
+    # Create a data frame and set index by id
+    df = pd.json_normalize(rows)
+    df.set_index('id', inplace=True)
+    df.sort_index(inplace=True)
+    # CHange timestampt to human date
+    df["timestamp"] = pd.to_datetime(df['timestamp'], unit='ms').dt.tz_localize('UTC').dt.tz_convert('America/Bogota')
+    return df
+
 def update_layout(fig, chart_title:str, **kwargs):
     
     x_title= kwargs.get('xaxis_title', None)
@@ -52,9 +61,7 @@ def update_layout(fig, chart_title:str, **kwargs):
     
     return fig
 
-def line_chart(df):
-    variable = "accY"
-    
+def line_chart(df, variable):
     near_crash_df = df.copy()
     no_crash_df = df.copy()
     x = df['timestamp']
@@ -83,6 +90,18 @@ def line_chart(df):
     
     return fig
 
+def histogram_chart(df, variable):
+    df['eventClass'].replace([0,1],['Sin evento', 'Near-Crash'], inplace=True)
+    
+    fig = px.histogram(df, x=variable, color="eventClass", marginal="box", nbins=35, barmode="overlay",
+                       color_discrete_map={'Sin evento':'#00D1B1',
+                                           'Near-Crash':'#FF385F'})
+    fig = update_layout(fig, f'Histograma de la {variables_dict[variable]}',
+                        xaxis_title=units_dict[variable], yaxis_title='Repeticiones')
+    fig.update_xaxes(nticks=12, tickangle=45)
+    
+    return fig
+
 def pie_chart(df):
     df.rename(columns={'eventClass':'Tipo de Evento'}, inplace=True)
     df['Cantidad'] = 1
@@ -96,22 +115,7 @@ def pie_chart(df):
     
     return fig
 
-def histogram_chart(df):
-    variable = "velAngX"
-    
-    df['eventClass'].replace([0,1],['Sin evento', 'Near-Crash'], inplace=True)
-    
-    fig = px.histogram(df, x=variable, color="eventClass", marginal="box", nbins=35, barmode="overlay",
-                       color_discrete_map={'Sin evento':'#00D1B1',
-                                           'Near-Crash':'#FF385F'})
-    fig = update_layout(fig, f'Histograma de la {variables_dict[variable]}',
-                        xaxis_title=units_dict[variable], yaxis_title='Repeticiones')
-    fig.update_xaxes(nticks=12, tickangle=45)
-    
-    return fig
-
 def scatter_matrix_chart(df):
-    
     df['eventClass'].replace([0,1],['Sin evento', 'Near-Crash'], inplace=True)
     
     # TODO: add the other values speed, pedal position, etc.
@@ -123,6 +127,7 @@ def scatter_matrix_chart(df):
                                                 'Near-Crash':'#FF385F'})
     fig = update_layout(fig, 'Matriz de dipsersión',height=1000)
     return fig
+
 
 @app.route("/")
 def query_trips():
@@ -136,50 +141,61 @@ def query_trips():
     }
     return render_template('index.html', **data)
 
-@app.route("/trips/details/<id>", methods=["GET"])
-def trip_details(id):
+@app.route("/trips/details/<id>", methods=["GET", "POST"])
+def trip_details(id):    
+    ref = db.reference('/tripList/' + str(id))
+    trip = ref.get()
     
-    #trip_name = str(id)
-    trip_name = "-Mqwa3JkKT8ny9lxOPnm"
-    df = pd.read_csv("./data/raspberry_-Mqwa3JkKT8ny9lxOPnm_data.csv")
-    df["timestamp"] = pd.to_datetime(df['timestamp'], unit='s')
-    
-    #fig = line_chart(df)
-    #fig = pie_chart(df)
-    #fig = histogram_chart(df)
-    fig = scatter_matrix_chart(df)
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    data = {
-        "trip": trip_name,
-        "graphJSON": graphJSON
-    }
-    # TODO: Reconocer el grafico line,chart,pie, etc
-    
-    if request.method == 'POST':
-        req = request.get_json()
-        
-        if req["chart"] == "line":
-            graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-            data = {
-                "trip": trip_name,
-                "graphJSON": graphJSON
-            }
-            return render_template('charts.html', **data)
-        else:
-            return render_template('charts.html', **data)
-        
-    else:
+    if request.method == 'GET':
+        trip_name = '-Mqwa3JkKT8ny9lxOPnm'
+        data = {
+            "trip": trip_name,
+            "tripId": id,
+            **trip
+        }
         return render_template('charts.html', **data)
+        
+    elif request.method == 'POST':
+        request_data = request.get_json()
+        graphType = request_data['graph']
+        variable = request_data['variable']
+        # Get all trip data from firebase
+        ref_trip = db.reference('/tripData/'+ str(trip['device']).lower() + "/" + str(id))
+        # Transform json to dataframe
+        rows = list(filter(None, ref_trip.get().values()))
+        df = create_df(rows)
+        # Julian data (Especial case)
+        #rows = list(filter(None, ref_trip.get()))
+        #df = create_df(rows)
+        
+        fig = None
+        if graphType == 'lineal':
+            fig = line_chart(df, variable)
+        elif graphType == 'histogram':
+            fig = histogram_chart(df, variable)
+        elif graphType == 'pie':
+            fig = pie_chart(df)
+        elif graphType == 'scatter':
+            fig = scatter_matrix_chart(df)
+        else:
+            res = make_response(json.dumps({"code": 400, "error": "Invalid fields"}), 400)
+            res.headers['Content-Type'] = 'application/json'
+            return res
 
+        graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        return graphJSON
+    
+    else:
+        res = make_response(json.dumps({"code": 404, "error": "NOT FOUND"}), 404)
+        res.headers['Content-Type'] = 'application/json'
+        return res
 
 @app.route("/removeTrip", methods=["DELETE"])
 def remove_trip():
     request_data = request.get_json()
     idTrip = request_data['idTrip']
     device = request_data['device']
-    response_data = {
-            'result': ''
-        }	
+    response_data = {'result': ''}
     try:
         #raise Exception('spam', 'eggs')
         ref = db.reference('/tripList/'+str(idTrip))
