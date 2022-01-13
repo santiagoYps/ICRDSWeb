@@ -21,8 +21,46 @@
 		</section>
 	</header>
 	<main>
-		<section class="section py-1">
-			<div class="tabs is-centered is-boxed">
+		<section class="section py-5">
+
+			<div class="block">
+				<h5 class="is-size-5 has-text-weight-bold has-text-info-dark has-text-centered">Filtrar información</h5>
+
+				<div class="level is-mobile is-align-items-flex-end my-3">
+					<div class="level-left is-align-items-flex-end">
+						<div class="level-item">
+							<div class="field">
+								<label class="label has-text-weight-normal has-text-info-dark">Desde:</label>
+								<div class="control">
+									<input id="initial-date" class="input" type="date" placeholder="fecha inicial">
+								</div>
+							</div>
+						</div>
+						<div class="level-item">
+							<div class="field">
+								<label class="label has-text-weight-normal has-text-info-dark">Hasta:</label>
+								<div class="control">
+									<input id="final-date" class="input" type="date" placeholder="fecha inicial">
+								</div>
+							</div>
+						</div>
+						<div class="level-item pb-1">
+							<span id="clear-date-filter" class="icon icon-image icon-clear is-hidden"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="level is-mobile">
+					<div class="level-left">
+						<div class="level-item">
+							<button id="date-filter-btn" class="button is-info is-light">Filtrar</button>
+						</div>
+					</div>
+				</div>
+
+			</div>		
+
+			<div class="tabs is-centered is-boxed mt-6">
 				<ul id="tabs">
 					<li class="is-active" data-device="smartphone"><a>Smartphone</a></li>
 					<li data-device="raspberry"><a>Raspberry</a></li>

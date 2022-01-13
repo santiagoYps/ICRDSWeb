@@ -197,8 +197,6 @@ def query_trips():
     data = {
         'title': 'Información de trayectos',
         'trips': {} if (tripList == None) else tripList
-        #'smartphoneTrips': smartphoneTrips,
-        #'raspberryTrips': raspberryTrips		
     }
     return render_template('index.html', **data)
 

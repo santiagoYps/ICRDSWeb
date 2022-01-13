@@ -1,11 +1,17 @@
-const tabs = document.getElementById('tabs')
-const tables = document.querySelector('.table-container').children;
+const tabs = document.querySelectorAll('#tabs li')
+const tables = document.querySelectorAll('.table-container table');
 const removeBtns = document.querySelectorAll('.icon.icon-delete');
 const detailsBtns = document.querySelectorAll('.icon.icon-details');
 const modal = document.getElementById('modal-confirmation');
+const initialDate = document.getElementById('initial-date');
+const finalDate = document.getElementById('final-date');
+const clearFilterBtn = document.getElementById('clear-date-filter');
+const filterBnt = document.getElementById('date-filter-btn');
+
 let tripToRemove = "";
 let row = -1;
 let device = "smartphone";
+let filterApplied = false;
 
 removeBtns.forEach(btn => {
   btn.addEventListener('click', (e) => {
@@ -13,25 +19,33 @@ removeBtns.forEach(btn => {
     showConfirmationModal(true);
   })
 });
+
 addModalListeners();
-tabs.addEventListener('click', handleTabsClick);
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', handleTabsClick);
+});
+
+filterBnt.addEventListener('click', filterTripsByDate, false);
+clearFilterBtn.addEventListener('click', clearFilter, false);
 
 
-function handleTabsClick(e) {
+function handleTabsClick(e) {  
   device = e.target.parentElement.dataset.device;
-  console.log(device)
-  for (t of tables){
+  console.log(device);
+
+  tables.forEach( t => {
     if (t.dataset.tab === device)
       t.classList.remove('is-hidden');
     else
       t.classList.add('is-hidden');
-  }
-  for (tab of tabs.children){
+  });
+  tabs.forEach(tab => {
     if (tab.dataset.device === device)
       tab.classList.add('is-active')
     else
       tab.classList.remove('is-active')
-  }  
+  });
 }
 
 
@@ -109,4 +123,73 @@ function addModalListeners(){
     });
   }
   modal.querySelector('button[data-delete]').addEventListener('click', removeTrip)
+}
+
+
+function filterTripsByDate() {
+  if (initialDate.value !== "" && finalDate.value !== "") {
+    const initialDateValue = initialDate.value !== "" ? 
+      new Date( Date.parse(initialDate.value + "T00:00") )   : new Date(0);
+    const finalDateValue = finalDate.value !== "" ? 
+        new Date( Date.parse(finalDate.value + "T00:00") )   : new Date();
+
+    tables.forEach( table => {
+      table.querySelectorAll("tbody tr").forEach( tr => {
+        dateTrip = strToDate( tr.children[0].textContent );
+        if ( !(dateTrip >= initialDateValue && dateTrip <= finalDateValue))
+          tr.classList.add('is-hidden');
+        else
+          tr.classList.remove('is-hidden');
+      });
+    });
+
+    filterApplied = true;
+    clearFilterBtn.classList.remove('is-hidden');
+  }
+}
+
+function clearFilter (){
+  tables.forEach( table => {
+    table.querySelectorAll("tbody tr").forEach( tr => {
+      tr.classList.remove('is-hidden');
+    });
+  });
+  clearFilterBtn.classList.add('is-hidden');
+  initialDate.value = "";
+  finalDate.value = "";
+}
+
+function strToDate( dateStr ) {  
+  let [day, monthStr, year] = dateStr.split(" ")[0].split("-");
+  if (day > 31){
+    let e2 = new Error();
+    e2.name = "Invalid Date format";
+    e2.message = "Please, supply a date string in the format: dd-MMM-YYYY"
+    throw e2;
+  }
+  let date = new Date(Number(year), monthNumber(monthStr), Number(day));
+  return date;
+}
+
+function monthNumber(monthStr) {
+  monthStr = monthStr.toUpperCase();
+  const monthNumbers = {
+    "JAN": 0, "ENE": 1,
+    "FEB": 1,
+    "MAR": 2,
+    "APR": 3, "ABR": 3,
+    "MAY": 4,
+    "JUN": 5,
+    "JUL": 6,
+    "AUG": 7, "AGO": 7,
+    "SEP": 8,
+    "OCT": 9,
+    "NOV": 10,
+    "DEC": 11, "DIC": 11
+  }
+  let num = monthNumbers[monthStr]
+  if (num != undefined)
+    return num;
+  else 
+    return -1;  
 }

@@ -21,3 +21,7 @@
 .icon-details {
   background-image: url(../../icons/details.png);
 }
+
+.icon-clear {
+  background-image: url(../../icons/close-circle.png);
+}
