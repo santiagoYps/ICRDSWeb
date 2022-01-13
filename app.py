@@ -9,16 +9,18 @@ from flask import Flask, render_template, request, Response, make_response
 from firebase_admin import credentials
 from firebase_admin import db
 
-
+# Init flask app
 app = Flask(__name__)
 app.config.from_pyfile('settings.py')
 
 cred = credentials.Certificate( app.config['CREDENTIALS'] )
 
+# Firebase intialization
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://vehicledatacollected-default-rtdb.firebaseio.com/'
 })
 
+# Dicts with variables translates
 variables_dict = {'speed':'Velocidad','breakPosition':'Presión del freno',
                   'accX':'Aceleración en X', 'accY':'Aceleración en Y', 'accZ':'Aceleración en Z',
                   'magX':'Fuerza magnética en X','magY':'Fuerza magnética en Y','magZ':'Fuerza magnética en Z',
@@ -29,20 +31,39 @@ units_dict = {'speed':'m/s','breakPosition':'% de presión',
               'velAngX':'rad/seg','velAngY':'rad/seg','velAngZ':'rad/seg'}
 
 def create_df(rows):
+    """Create a DataFrame with a List
+
+    Args:
+        rows (list): list of all captured data for the device, 
+        each item in the list contains a JSON data (dict)
+
+    Returns:
+        DataFrame: a dataframe with all kinematic variable in its columns
+    """
     # Create a data frame and set index by id
     df = pd.json_normalize(rows)
     df.set_index('id', inplace=True)
     df.sort_index(inplace=True)
-    # CHange timestampt to human date
+    # Change timestampt to human date
     df["timestamp"] = pd.to_datetime(df['timestamp'], unit='ms').dt.tz_localize('UTC').dt.tz_convert('America/Bogota')
     return df
 
 def update_layout(fig, chart_title:str, **kwargs):
-    
+    """Update layout for every chart
+
+    Args:
+        fig: A plotly figure
+        chart_title (str): A title for chart
+
+    Returns:
+        fig: the updated layout for the plotly figure
+    """
+    # Get kwards data if is needed
     x_title= kwargs.get('xaxis_title', None)
     y_title= kwargs.get('yaxis_title', None)
     height_size = kwargs.get('height', 450)
     
+    # Update layout of the figure
     fig.update_layout(
         title={'text':chart_title, 'x':0.5},
         legend_title='Tipo de evento',
@@ -62,12 +83,22 @@ def update_layout(fig, chart_title:str, **kwargs):
     return fig
 
 def line_chart(df, variable):
+    """Line chart created with plotly graphic object
+
+    Args:
+        df (DataFrame): The dataframe that contains the data to plot
+        variable (str): The specific variable to plot
+
+    Returns:
+        fig: A plotly figure
+    """
+    # Create a copy of the data frame to avoid losing important data
     near_crash_df = df.copy()
     no_crash_df = df.copy()
     x = df['timestamp']
     # Filter colums for eventClass
-    near_crash_df.loc[df['eventClass'] == 0, variable] = None # Set all normal events to NaN
-    no_crash_df.loc[df['eventClass'] == 1, variable] = None # Set all near-crash events to NaN
+    near_crash_df.loc[df['eventClass'] == 0, variable] = None # Set all variables where have a normal events to NaN
+    no_crash_df.loc[df['eventClass'] == 1, variable] = None # Set all variables where have a near-crash events to NaN
     
     fig = go.Figure()
     fig.add_trace(go.Scatter(
@@ -91,6 +122,15 @@ def line_chart(df, variable):
     return fig
 
 def histogram_chart(df, variable):
+    """Histogram chart created with plotly express
+
+    Args:
+        df (DataFrame): The dataframe that contains the data to plot
+        variable (str): The specific variable to plot
+
+    Returns:
+        fig: A plotly figure
+    """
     df['eventClass'].replace([0,1],['Sin evento', 'Near-Crash'], inplace=True)
     
     fig = px.histogram(df, x=variable, color="eventClass", marginal="box", nbins=35, barmode="overlay",
@@ -103,6 +143,14 @@ def histogram_chart(df, variable):
     return fig
 
 def pie_chart(df):
+    """Pie chart created with plotly express
+
+    Args:
+        df (DataFrame): The dataframe that contains the data to plot
+
+    Returns:
+        fig: A plotly figure
+    """
     df.rename(columns={'eventClass':'Tipo de Evento'}, inplace=True)
     df['Cantidad'] = 1
     df['Tipo de Evento'].replace([0,1],['Sin evento', 'Near-Crash'], inplace=True)
@@ -116,6 +164,14 @@ def pie_chart(df):
     return fig
 
 def scatter_matrix_chart(df):
+    """Scatter matrix chart created with plotly express
+
+    Args:
+        df (DataFrame): The dataframe that contains the data to plot
+
+    Returns:
+        fig: A plotly figure
+    """
     df['eventClass'].replace([0,1],['Sin evento', 'Near-Crash'], inplace=True)
     
     # TODO: add the other values speed, pedal position, etc.
@@ -131,6 +187,11 @@ def scatter_matrix_chart(df):
 
 @app.route("/")
 def query_trips():
+    """Query trips, get data from trips and show
+
+    Returns:
+        template: render template for index.html with all necesarry data
+    """
     ref = db.reference('/tripList')
     tripList = ref.get()
     data = {
@@ -142,13 +203,22 @@ def query_trips():
     return render_template('index.html', **data)
 
 @app.route("/trips/details/<id>", methods=["GET", "POST"])
-def trip_details(id):    
+def trip_details(id):
+    """Trip details, get info and plot all data from one trip
+
+    Args:
+        id (str): id from firebase
+
+    Returns:
+        template: render template for charts.html with all necesarry data
+    """
     ref = db.reference('/tripList/' + str(id))
     trip = ref.get()
     
     if request.method == 'GET':
         trip_name = '-Mqwa3JkKT8ny9lxOPnm'
         data = {
+            "title": "Charts",
             "trip": trip_name,
             "tripId": id,
             **trip
@@ -192,6 +262,11 @@ def trip_details(id):
 
 @app.route("/removeTrip", methods=["DELETE"])
 def remove_trip():
+    """Remove a trip
+
+    Returns:
+        res: A response to frontend
+    """
     request_data = request.get_json()
     idTrip = request_data['idTrip']
     device = request_data['device']
