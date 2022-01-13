@@ -11,7 +11,6 @@ const filterBnt = document.getElementById('date-filter-btn');
 let tripToRemove = "";
 let row = -1;
 let device = "smartphone";
-let filterApplied = false;
 
 removeBtns.forEach(btn => {
   btn.addEventListener('click', (e) => {
@@ -96,7 +95,7 @@ function showNotification(result) {
   else {
     notification.classList.add('is-danger');
     notification.classList.remove('is-primary');
-    notification.firstChild.textContent = 'Ocurrió un error al borrar el trayecto';
+    notification.firstChild.textContent = 'OcurriÃ³ un error al borrar el trayecto';
   }
 
   notification.querySelector('.delete').addEventListener('click', (e)=>{
@@ -127,7 +126,7 @@ function addModalListeners(){
 
 
 function filterTripsByDate() {
-  if (initialDate.value !== "" && finalDate.value !== "") {
+  if (initialDate.value !== "" || finalDate.value !== "") {
     const initialDateValue = initialDate.value !== "" ? 
       new Date( Date.parse(initialDate.value + "T00:00") )   : new Date(0);
     const finalDateValue = finalDate.value !== "" ? 
@@ -143,7 +142,6 @@ function filterTripsByDate() {
       });
     });
 
-    filterApplied = true;
     clearFilterBtn.classList.remove('is-hidden');
   }
 }
@@ -174,7 +172,7 @@ function strToDate( dateStr ) {
 function monthNumber(monthStr) {
   monthStr = monthStr.toUpperCase();
   const monthNumbers = {
-    "JAN": 0, "ENE": 1,
+    "JAN": 0, "ENE": 0,
     "FEB": 1,
     "MAR": 2,
     "APR": 3, "ABR": 3,
