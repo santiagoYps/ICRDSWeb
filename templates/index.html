@@ -60,7 +60,8 @@
 
 			</div>		
 
-			<div class="tabs is-centered is-boxed mt-6">
+			<h5 class="is-size-5 has-text-weight-bold has-text-info-dark has-text-centered">Datos de Trayectos</h5>
+			<div class="tabs is-centered is-boxed mt-3">
 				<ul id="tabs">
 					<li class="is-active" data-device="smartphone"><a>Smartphone</a></li>
 					<li data-device="raspberry"><a>Raspberry</a></li>
@@ -73,6 +74,7 @@
 							<th class="has-text-info-dark">Fecha</th>
 							<th class="has-text-info-dark">Datos cinemáticos</th>
 							<th class="has-text-info-dark">Id del Vehículo</th>
+							<th class="has-text-info-dark">Ruta</th>
 							<th class="has-text-info-dark">Opciones</th>
 						</tr>
 					</thead>
@@ -83,6 +85,7 @@
 								<th>{{ value['date'] }}</th>
 								<td>{{ value['kinematicData'] }}</td>
 								<td>{{ value['vehicle'] }}</td>
+								<td>{{ value['route'] }}</td>
 								<td>
 									<span class="icon icon-image icon-delete" data-item="{{ key }}"></span>
 									<a class="icon icon-image icon-details" href="./trips/details/{{ key }}"></a>
@@ -99,6 +102,7 @@
 							<th class="has-text-info-dark">Fecha</th>
 							<th class="has-text-info-dark">Datos cinemáticos</th>
 							<th class="has-text-info-dark">Id del Vehículo</th>
+							<th class="has-text-info-dark">Ruta</th>
 							<th class="has-text-info-dark">Opciones</th>
 						</tr>
 					</thead>
@@ -109,6 +113,7 @@
 								<th>{{ value['date'] }}</th>
 								<td>{{ value['kinematicData'] }}</td>
 								<td>{{ value['vehicle'] }}</td>
+								<td>{{ value['route'] }}</td>
 								<td>
 									<span class="icon icon-image icon-delete" data-item="{{ key }}"></span>
 									<a class="icon icon-image icon-details" href="./trips/details/{{ key }}"></a>

@@ -128,7 +128,7 @@ function addModalListeners(){
 function filterTripsByDate() {
   if (initialDate.value !== "" || finalDate.value !== "") {
     const initialDateValue = initialDate.value !== "" ? 
-      new Date( Date.parse(initialDate.value + "T00:00") )   : new Date(0);
+        new Date( Date.parse(initialDate.value + "T00:00") )   : new Date(0);
     const finalDateValue = finalDate.value !== "" ? 
         new Date( Date.parse(finalDate.value + "T00:00") )   : new Date();
 
