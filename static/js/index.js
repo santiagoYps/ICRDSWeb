@@ -5,12 +5,47 @@ const detailsBtns = document.querySelectorAll('.icon.icon-details');
 const modal = document.getElementById('modal-confirmation');
 const initialDate = document.getElementById('initial-date');
 const finalDate = document.getElementById('final-date');
-const clearFilterBtn = document.getElementById('clear-date-filter');
-const filterBnt = document.getElementById('date-filter-btn');
+const selectVehicle = document.getElementById('vehicle-filter');
+const selectRoute = document.getElementById('route-filter');
+const clearDateFilterBtn = document.getElementById('clear-date-filter');
+const clearVehicleFilterBtn = document.getElementById('clear-vehicle-filter');
+const clearRouteFilterBtn = document.getElementById('clear-route-filter');
 
 let tripToRemove = "";
 let row = -1;
 let device = "smartphone";
+let filters = {
+  'date': {
+    'condition': ['', ''],
+    'active': false,
+    'filter': function(dateTrip) {
+      if ( !(dateTrip >= this.condition[0] && dateTrip <= this.condition[1]))
+        return false;
+      else
+        return true;
+    }
+  },
+  'vehicle': {
+    'condition': '',
+    'active': false,
+    'filter': function (vehicle) {
+      if (vehicle === this.condition)
+        return true;
+      else 
+        return false;
+    }
+  },
+  'route': {
+    'condition': '',
+    'active': false,
+    'filter': function (route) {
+      if (route === this.condition)
+        return true;
+      else 
+        return false;
+    }
+  }
+}
 
 removeBtns.forEach(btn => {
   btn.addEventListener('click', (e) => {
@@ -25,9 +60,43 @@ tabs.forEach(tab => {
   tab.addEventListener('click', handleTabsClick);
 });
 
-filterBnt.addEventListener('click', filterTripsByDate, false);
-clearFilterBtn.addEventListener('click', clearFilter, false);
+initialDate.addEventListener('change', (e) => {
+  updateDateCondition();
+  filterTrips();
+}, false);
 
+finalDate.addEventListener('change', (e) => {
+  updateDateCondition();
+  filterTrips();
+}, false);
+
+selectVehicle.addEventListener('change', (e) => {
+  updateVehicleCondition();
+  filterTrips();
+}, false);
+selectRoute.addEventListener('change', (e) => {
+  updateRouteCondition();
+  filterTrips();
+}, false);
+
+clearDateFilterBtn.addEventListener('click', (e) => {
+  initialDate.value = "";
+  finalDate.value = "";
+  updateDateCondition();
+  filterTrips();
+}, false);
+
+clearVehicleFilterBtn.addEventListener('click', (e) => {
+  selectVehicle.selectedIndex = 0;
+  updateVehicleCondition();
+  filterTrips();
+}, false);
+
+clearRouteFilterBtn.addEventListener('click', (e) => {
+  selectRoute.selectedIndex = 0;
+  updateRouteCondition();
+  filterTrips();
+}, false);
 
 function handleTabsClick(e) {  
   device = e.target.parentElement.dataset.device;
@@ -124,37 +193,71 @@ function addModalListeners(){
   modal.querySelector('button[data-delete]').addEventListener('click', removeTrip)
 }
 
-
-function filterTripsByDate() {
-  if (initialDate.value !== "" || finalDate.value !== "") {
+function updateDateCondition(){
+  if (initialDate.value !== "" || finalDate.value !== ""){
     const initialDateValue = initialDate.value !== "" ? 
-        new Date( Date.parse(initialDate.value + "T00:00") )   : new Date(0);
+      new Date( Date.parse(initialDate.value + "T00:00") )   : new Date(0);
     const finalDateValue = finalDate.value !== "" ? 
-        new Date( Date.parse(finalDate.value + "T00:00") )   : new Date();
-
-    tables.forEach( table => {
-      table.querySelectorAll("tbody tr").forEach( tr => {
-        dateTrip = strToDate( tr.children[0].textContent );
-        if ( !(dateTrip >= initialDateValue && dateTrip <= finalDateValue))
-          tr.classList.add('is-hidden');
-        else
-          tr.classList.remove('is-hidden');
-      });
-    });
-
-    clearFilterBtn.classList.remove('is-hidden');
+      new Date( Date.parse(finalDate.value + "T00:00") )   : new Date();
+    filters.date.condition = [initialDateValue, finalDateValue];
+    filters.date.active = true;
+    clearDateFilterBtn.classList.remove('is-invisible');
+  }
+  else {
+    filters.date.condition = ["", ""];
+    filters.date.active = false;
+    clearDateFilterBtn.classList.add('is-invisible');
   }
 }
 
-function clearFilter (){
+function updateVehicleCondition() {
+  if (selectVehicle.selectedIndex !== 0) {
+    filters.vehicle.condition = selectVehicle.value;
+    filters.vehicle.active = true;
+    clearVehicleFilterBtn.classList.remove('is-invisible');
+  }
+  else {
+    filters.vehicle.condition = "";
+    filters.vehicle.active = false;
+    clearVehicleFilterBtn.classList.add('is-invisible');
+  }  
+}
+
+function updateRouteCondition() {
+  if (selectRoute.selectedIndex !== 0) {
+    filters.route.condition = selectRoute.value;
+    filters.route.active = true;
+    clearRouteFilterBtn.classList.remove('is-invisible');
+  }
+  else {
+    filters.route.condition = "";
+    filters.route.active = false;
+    clearRouteFilterBtn.classList.add('is-invisible');
+  }
+}
+
+function filterTrips() {
   tables.forEach( table => {
     table.querySelectorAll("tbody tr").forEach( tr => {
-      tr.classList.remove('is-hidden');
+      let results = []
+      results[0] = (filters.date.active)
+        ? filters.date.filter( strToDate( tr.children[0].textContent ) )
+        : true;
+      
+      results[1] = (filters.vehicle.active)
+        ? filters.vehicle.filter( tr.children[2].textContent )
+        : true;
+
+      results[2] = (filters.route.active)
+        ? filters.route.filter( tr.children[3].textContent )
+        : true;
+
+      if ( results.includes(false) )
+        tr.classList.add('is-hidden');
+      else
+        tr.classList.remove('is-hidden');
     });
   });
-  clearFilterBtn.classList.add('is-hidden');
-  initialDate.value = "";
-  finalDate.value = "";
 }
 
 function strToDate( dateStr ) {  
