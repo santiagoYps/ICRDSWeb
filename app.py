@@ -312,7 +312,8 @@ def download_csv(data_id):
     # Get trip data from firebase
     ref_trip = db.reference('/tripData/'+ device_name + "/" + data_id)
     # Transform json to dataframe
-    rows = list(filter(None, ref_trip.get().values()))
+    firebase_data = ref_trip.get()
+    rows = list(filter(None, firebase_data.values())) if isinstance(firebase_data, dict) else filter(None, firebase_data)
     df = create_df(rows)
     
     # Generate the CSV file
