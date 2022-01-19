@@ -16,3 +16,25 @@
 .icon-download {
   background-image: url(../../icons/download.png);
 }
+
+.loading-chart {
+  margin-left: auto;
+  margin-right: auto;
+  width: 36px;
+  height: 36px;
+  border: 4px solid rgb(230, 230, 230);
+  border-radius: 50%;
+  border-left-color: #3e8ed0;
+
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+  
+}

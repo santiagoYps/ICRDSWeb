@@ -5,6 +5,7 @@ const graphMsgs = {
     'pie': 'El diagrama de pastel mostrará solo la clasificación de eventos (near-crash/Sin evento)',
     'scatter': 'El diagrama de dispersión se mostrará todas las variables'
 }
+const graphsWithVariables = ['lineal', 'histogram']
 
 
 graphSelectContainer.addEventListener('change', handleGraphSelection, false);
@@ -41,13 +42,18 @@ async function updateGraphics(e) {
     e.preventDefault();
     let graphicSelect = graphSelectContainer.querySelector('select');
     let variableSelect = variableSelectContainer.querySelector('select');
-    let isCorrect = validateOptions(graphicSelect, variableSelect);
-
-    let variable = ( ['lineal', 'histogram'].includes(graphicSelect.value) ) ?
-        variableSelect.value : 'none';
-
+    
+    let variable = ( graphsWithVariables.includes(graphicSelect.value) )
+        ? variableSelect.value
+        : 'none';
+    
+    let isCorrect = validateOptions(graphicSelect, variableSelect, variable);
+    console.log(isCorrect);
     if (isCorrect) {
-        //TODO: show loading
+        document.getElementById('error-msg').classList.add('is-hidden');
+        document.querySelector('.loading-chart').classList.remove('is-hidden');
+        document.getElementById('chart').classList.add('is-invisible');
+
         const tripId = document.getElementById('trip-info').dataset.tripId;
         let requestData = {
             "graph": graphicSelect.value,
@@ -65,10 +71,12 @@ async function updateGraphics(e) {
         console.log(graphJSON);
 
         graphic(graphJSON);
-
-        // graphic
+        document.querySelector('.loading-chart').classList.add('is-hidden');
+        document.getElementById('chart').classList.remove('is-invisible');
         // hide loading
     }
+    else
+        document.getElementById('error-msg').classList.remove('is-hidden');
 }
 
 function graphic(graphJSON){
@@ -77,15 +85,13 @@ function graphic(graphJSON){
     Plotly.newPlot('chart', graphs, config, {});
 }
 
-function validateOptions(graphicSelect, variableSelect) {
-    let validation;
-    if (graphicSelect.selectedIndex === 0 || variableSelect.selectedIndex === 0) {
-        validation = false;
-        document.getElementById('error-msg').classList.remove('is-hidden');
-    }
-    else {
-        validation = true;
-        document.getElementById('error-msg').classList.add('is-hidden');
-    }
-    return validation;
+function validateOptions(graphicSelect, variableSelect, variable) {
+    //Si no se debe seleccionar variable y hay un grafico seleccionado
+    if (variable === 'none' && graphicSelect.selectedIndex !== 0)
+        return true;
+    //Si se debe seleccionar variable y hay tanto grafico como variable seleccionada.
+    else if (variable !== 'none' && graphicSelect.selectedIndex !== 0 && variableSelect.selectedIndex !== 0)
+        return true;
+    else
+        return false;
 }
