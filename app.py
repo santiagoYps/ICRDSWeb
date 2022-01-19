@@ -4,8 +4,9 @@ import json
 import plotly
 import plotly.express as px
 import plotly.graph_objects as go
+import os
 
-from flask import Flask, render_template, request, Response, make_response
+from flask import Flask, render_template, request, Response, make_response, send_from_directory, abort
 from firebase_admin import credentials
 from firebase_admin import db
 
@@ -214,9 +215,9 @@ def trip_details(id):
     trip = ref.get()
     
     if request.method == 'GET':
-        trip_name = '-Mqwa3JkKT8ny9lxOPnm'
+        trip_name = str(id)
         data = {
-            "title": "Charts",
+            "title": "Datos del viaje: ",
             "trip": trip_name,
             "tripId": id,
             **trip
@@ -224,6 +225,7 @@ def trip_details(id):
         return render_template('charts.html', **data)
         
     elif request.method == 'POST':
+        # get data from fetch in javascript
         request_data = request.get_json()
         graphType = request_data['graph']
         variable = request_data['variable']
@@ -287,3 +289,35 @@ def remove_trip():
         res = make_response(json.dumps(response_data), 200)
         res.headers['Content-Type'] = 'application/json'
         return res
+    
+@app.route('/download/<string:data_id>')
+def download_csv(data_id):
+    """[summary]
+
+    Args:
+        data_id (str): A string with the trip id
+
+    Returns:
+        [type]: [description]
+    """
+    # Get trip info from firebase
+    ref = db.reference('/tripList/' + data_id)
+    trip = ref.get()
+    
+    device_name = str(trip['device']).lower()
+    
+    # Get trip data from firebase
+    ref_trip = db.reference('/tripData/'+ device_name + "/" + data_id)
+    # Transform json to dataframe
+    rows = list(filter(None, ref_trip.get().values()))
+    df = create_df(rows)
+    
+    # Generate the CSV file
+    csv_name = device_name + "_" + str(trip["date"]).split(" ")[0] + data_id + ".csv"
+    df.to_csv(f"./data/{csv_name}",index=True)
+    #uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
+    # Returning file from appended path
+    try:
+        return send_from_directory(app.config['CSV_PATH'], path=csv_name, as_attachment=True)
+    except FileNotFoundError:
+        abort(404)

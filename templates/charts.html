@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ title }}</title>
+    <title>{{ title }} {{trip}}</title>
     <link rel="stylesheet" href="/static/styles/css/bulma.min.css">
     <link rel="stylesheet" href="/static/styles/css/charts.css">
     <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
@@ -28,11 +28,13 @@
     <section class="section py-0">
         <div class="level">
             <h2 class="level-left title is-4 mb-0">Información de trayecto</h2>
-            <button class="level-right button is-info is-light">
-                <span>Descargar CSV</span>
-                <span class="icon icon-image icon-download">
-                </span>
-              </button>
+            <a href="{{ url_for('download_csv', data_id=tripId) }}">
+                <button class="level-right button is-info is-light">
+                    <span>Descargar CSV</span>
+                    <span class="icon icon-image icon-download">
+                    </span>
+                </button>
+            </a>
         </div>
         
         <div class="level box" id="trip-info" data-trip-id="{{ tripId }}">
