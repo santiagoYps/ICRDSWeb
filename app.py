@@ -1,3 +1,4 @@
+from turtle import width
 import firebase_admin
 import pandas as pd
 import json
@@ -231,8 +232,10 @@ def trip_details(id):
         variable = request_data['variable']
         # Get all trip data from firebase
         ref_trip = db.reference('/tripData/'+ str(trip['device']).lower() + "/" + str(id))
-        # Transform json to dataframe
-        rows = list(filter(None, ref_trip.get().values()))
+        firebase_data = ref_trip.get()
+            
+        # Transform json to dataframe if firebase returns a dict
+        rows = list(filter(None, firebase_data.values())) if isinstance(firebase_data, dict) else filter(None, firebase_data)
         df = create_df(rows)
         # Julian data (Especial case)
         #rows = list(filter(None, ref_trip.get()))

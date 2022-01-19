@@ -26,38 +26,85 @@
 			<div class="block">
 				<h5 class="is-size-5 has-text-weight-bold has-text-info-dark has-text-centered">Filtrar información</h5>
 
-				<div class="level is-mobile is-align-items-flex-end my-3">
-					<div class="level-left is-align-items-flex-end">
-						<div class="level-item">
-							<div class="field">
-								<label class="label has-text-weight-normal has-text-info-dark">Desde:</label>
-								<div class="control">
-									<input id="initial-date" class="input" type="date" placeholder="fecha inicial">
+				<div class="columns is-mobile is-centered is-multiline mt-1">
+					<div class="column">
+						<div class="level is-mobile">
+							<div class="level-left is-align-items-flex-end">
+								<div class="level-item">
+									<div class="field">
+										<label class="label has-text-weight-normal has-text-info-dark">Desde:</label>
+										<div class="control">
+											<input id="initial-date" class="input" type="date" placeholder="fecha inicial">
+										</div>
+									</div>
+								</div>
+								<div class="level-item">
+									<div class="field">
+										<label class="label has-text-weight-normal has-text-info-dark">Hasta:</label>
+										<div class="control">
+											<input id="final-date" class="input" type="date" placeholder="fecha inicial">
+										</div>
+									</div>
+								</div>
+								<div class="level-item pb-2">
+									<span id="clear-date-filter" class="icon icon-image icon-clear is-invisible"></span>
 								</div>
 							</div>
 						</div>
-						<div class="level-item">
-							<div class="field">
-								<label class="label has-text-weight-normal has-text-info-dark">Hasta:</label>
-								<div class="control">
-									<input id="final-date" class="input" type="date" placeholder="fecha inicial">
+					</div>
+
+					<div class="column">
+						<div class="level is-mobile">
+							<div class="level-left is-align-items-flex-end">
+								<div class="level-item">
+									<div class="field">
+										<label class="label has-text-weight-normal has-text-info-dark">Vehiculo:</label>
+										<div class="control">
+											<div class="select">
+												<select name="vehicle-filter" id="vehicle-filter">
+													<option selected disabled>Seleccione vehículo</option>
+													<option value="Vehículo 1">Vehículo 1</option>
+													<option value="Vehículo 2">Vehículo 2</option>
+													<option value="Vehículo 3">Vehículo 3</option>
+													<option value="Vehículo 4">Vehículo 4</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="level-item pb-2">
+									<span id="clear-vehicle-filter" class="icon icon-image icon-clear is-invisible"></span>
 								</div>
 							</div>
 						</div>
-						<div class="level-item pb-1">
-							<span id="clear-date-filter" class="icon icon-image icon-clear is-hidden"></span>
+					</div>
+
+					<div class="column">
+						<div class="level is-mobile">
+							<div class="level-left is-align-items-flex-end">
+								<div class="level-item">
+									<div class="field">
+										<label class="label has-text-weight-normal has-text-info-dark">Ruta:</label>
+										<div class="control">
+											<div class="select">
+												<select name="route-filter" id="route-filter">
+													<option selected disabled>Seleccione ruta</option>
+													<option value="Ruta 1">Ruta 1</option>
+													<option value="Ruta 2">Ruta 2</option>
+													<option value="Ruta 3">Ruta 3</option>
+													<option value="Ruta 4">Ruta 4</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="level-item pb-2">
+									<span id="clear-route-filter" class="icon icon-image icon-clear is-invisible"></span>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-
-				<div class="level is-mobile">
-					<div class="level-left">
-						<div class="level-item">
-							<button id="date-filter-btn" class="button is-info is-light">Filtrar</button>
-						</div>
-					</div>
-				</div>
-
 			</div>		
 
 			<h5 class="is-size-5 has-text-weight-bold has-text-info-dark has-text-centered">Datos de Trayectos</h5>
