@@ -32,22 +32,27 @@ units_dict = {'speed':'m/s','breakPosition':'% de presión',
               'magX':'\u03BC T','magY':'\u03BC T','magZ':'\u03BC T',
               'velAngX':'rad/seg','velAngY':'rad/seg','velAngZ':'rad/seg'}
 
-def create_df(rows):
-    """Create a DataFrame with a List
+def create_df(firebase_data):
+    """Create a DataFrame with a json from firebase
 
     Args:
-        rows (list): list of all captured data for the device, 
-        each item in the list contains a JSON data (dict)
+        firebase_data (dict or list): all captured data for the device,
+        each item in the list contains a JSON data (dict) or a list of all data
 
     Returns:
         DataFrame: a dataframe with all kinematic variable in its columns
     """
+    # Check type of data (list or dict) for manage the logic to transform json to dataframe
+    rows = list(filter(None, firebase_data.values())) if isinstance(firebase_data, dict) else filter(None, firebase_data)
     # Create a data frame and set index by id
     df = pd.json_normalize(rows)
     df.set_index('id', inplace=True)
     df.sort_index(inplace=True)
     # Change timestampt to human date
     df["timestamp"] = pd.to_datetime(df['timestamp'], unit='ms').dt.tz_localize('UTC').dt.tz_convert('America/Bogota')
+    # Check if the eventClass column is boolean or int
+    if (df.dtypes['eventClass'] == bool):
+        df['eventClass'] = df['eventClass'].astype('int64')
     return df
 
 def update_layout(fig, chart_title:str, **kwargs):
@@ -235,11 +240,7 @@ def trip_details(id):
         firebase_data = ref_trip.get()
             
         # Transform json to dataframe if firebase returns a dict
-        rows = list(filter(None, firebase_data.values())) if isinstance(firebase_data, dict) else filter(None, firebase_data)
-        df = create_df(rows)
-        # Julian data (Especial case)
-        #rows = list(filter(None, ref_trip.get()))
-        #df = create_df(rows)
+        df = create_df(firebase_data)
         
         fig = None
         if graphType == 'lineal':
@@ -313,8 +314,7 @@ def download_csv(data_id):
     ref_trip = db.reference('/tripData/'+ device_name + "/" + data_id)
     # Transform json to dataframe
     firebase_data = ref_trip.get()
-    rows = list(filter(None, firebase_data.values())) if isinstance(firebase_data, dict) else filter(None, firebase_data)
-    df = create_df(rows)
+    df = create_df(firebase_data)
     
     # Generate the CSV file
     csv_name = device_name + "_" + str(trip["date"]).split(" ")[0] + data_id + ".csv"
