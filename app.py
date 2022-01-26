@@ -23,11 +23,11 @@ firebase_admin.initialize_app(cred, {
 })
 
 # Dicts with variables translates
-variables_dict = {'speed':'Velocidad','breakPosition':'Presión del freno',
+variables_dict = {'speed':'Velocidad','accPosition':'Presión del acelerador',
                   'accX':'Aceleración en X', 'accY':'Aceleración en Y', 'accZ':'Aceleración en Z',
                   'magX':'Fuerza magnética en X','magY':'Fuerza magnética en Y','magZ':'Fuerza magnética en Z',
                   'velAngX':'Velocidad angular en X','velAngY':'Velocidad angular en Y','velAngZ':'Velocidad angular en Z'}
-units_dict = {'speed':'m/s','breakPosition':'% de presión',
+units_dict = {'speed':'m/s','accPosition':'% de presión',
               'accX':'m/s\u00B2', 'accY':'m/s\u00B2', 'accZ':'m/s\u00B2',
               'magX':'\u03BC T','magY':'\u03BC T','magZ':'\u03BC T',
               'velAngX':'rad/seg','velAngY':'rad/seg','velAngZ':'rad/seg'}
