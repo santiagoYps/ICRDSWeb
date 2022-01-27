@@ -89,13 +89,6 @@
 											<div class="select">
 												<select name="route-filter" id="route-filter">
 													<option selected disabled>Seleccione ruta</option>
-<<<<<<< HEAD
-=======
-													<option value="Ruta 1">Ruta 1</option>
-													<option value="Ruta 2">Ruta 2</option>
-													<option value="Ruta 3">Ruta 3</option>
-													<option value="Ruta 4">Ruta 4</option>
->>>>>>> bbc89816a9d4e5826041d9bb2f7efaba3369f648
 													<option value="Aceleración repentina">Aceleración repentina</option>
 													<option value="Frenada repentina">Frenada repentina</option>
 													<option value="Giro derecho agresivo">Giro derecho agresivo</option>
@@ -129,6 +122,7 @@
 					<thead>
 						<tr class="has-background-info-light">
 							<th class="has-text-info-dark">Fecha</th>
+							<th class="has-text-info-dark">ID local</th>
 							<th class="has-text-info-dark">Datos cinemáticos</th>
 							<th class="has-text-info-dark">Id del Vehículo</th>
 							<th class="has-text-info-dark">Ruta</th>
@@ -140,6 +134,11 @@
 							{% if value['device'] == 'Smartphone' %}
 							<tr id="{{ key }}" data-href="./trips/details/{{key}}">
 								<th>{{ value['date'] }}</th>
+								{% if 'tripLocalId' in value %}
+									<td>{{ value['tripLocalId'] }}</td>
+								{% else %}
+									<td>-</td>
+								{% endif %}
 								<td>{{ value['kinematicData'] }}</td>
 								<td>{{ value['vehicle'] }}</td>
 								<td>{{ value['route'] }}</td>
@@ -157,6 +156,7 @@
 					<thead>
 						<tr class="has-background-info-light">
 							<th class="has-text-info-dark">Fecha</th>
+							<th class="has-text-info-dark">ID local</th>
 							<th class="has-text-info-dark">Datos cinemáticos</th>
 							<th class="has-text-info-dark">Id del Vehículo</th>
 							<th class="has-text-info-dark">Ruta</th>
@@ -168,6 +168,11 @@
 							{% if value['device'] == 'Raspberry' %}
 							<tr id="{{ key }}">
 								<th>{{ value['date'] }}</th>
+								{% if 'tripLocalId' in value %}
+									<td>{{ value['tripLocalId'] }}</td>
+								{% else %}
+									<td>-</td>
+								{% endif %}
 								<td>{{ value['kinematicData'] }}</td>
 								<td>{{ value['vehicle'] }}</td>
 								<td>{{ value['route'] }}</td>

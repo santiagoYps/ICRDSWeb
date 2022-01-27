@@ -219,6 +219,8 @@ def trip_details(id):
     """
     ref = db.reference('/tripList/' + str(id))
     trip = ref.get()
+    if not("tripLocalId" in trip):
+        trip['tripLocalId'] = '-';
     
     if request.method == 'GET':
         trip_name = str(id)
