@@ -311,6 +311,7 @@ def download_csv(data_id):
     trip = ref.get()
     
     device_name = str(trip['device']).lower()
+    route_name = str(trip['route']).lower()
     
     # Get trip data from firebase
     ref_trip = db.reference('/tripData/'+ device_name + "/" + data_id)
@@ -319,7 +320,7 @@ def download_csv(data_id):
     df = create_df(firebase_data)
     
     # Generate the CSV file
-    csv_name = device_name + "_" + str(trip["date"]).split(" ")[0] + data_id + ".csv"
+    csv_name = device_name + "_" + route_name + "_" + str(trip["date"]).split(" ")[0] + data_id + ".csv"
     df.to_csv(f"./data/{csv_name}",index=True)
     #uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
     # Returning file from appended path
