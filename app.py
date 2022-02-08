@@ -318,9 +318,14 @@ def download_csv(data_id):
     # Transform json to dataframe
     firebase_data = ref_trip.get()
     df = create_df(firebase_data)
+
+    # Formating date trip
+    date = trip["date"].split(" ")
+    time = date[1].split(":") 
+    trip_date = str(date[0] + "-" + time[0] + "-" + time[1])
     
     # Generate the CSV file
-    csv_name = device_name + "_" + route_name + "_" + str(trip["date"]).split(" ")[0] + data_id + ".csv"
+    csv_name = device_name + "_" + trip_date + "_" + route_name + "_Data" + data_id + ".csv"
     df.to_csv(f"./data/{csv_name}",index=True)
     #uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
     # Returning file from appended path
