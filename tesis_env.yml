@@ -1,0 +1,8 @@
+name: tesis
+channels:
+  - defaults
+dependencies:
+  - python=3.9
+  - scikit-learn
+  - ipykernel
+prefix: /home/juan/anaconda3/envs/tesis
