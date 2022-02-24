@@ -1,0 +1,68 @@
+raspberry_02-Feb-2022-19-57_aceleración repentina_Data-Muy3Rwan4A9AhGjSY_j.csv
+raspberry_02-Feb-2022-19-58_aceleración repentina_Data-Mv1lsdW8oLkQkP2XcI9.csv
+raspberry_02-Feb-2022-19-59_aceleración repentina_Data-Mv1lxNTPcnt0_t3C724.csv
+raspberry_02-Feb-2022-20-00_aceleración repentina_Data-Mv1m25ILfD2v20bDi5Q.csv
+raspberry_02-Feb-2022-20-02_frenada repentina_Data-Mv2E_1BnfkXOP6gRM1J.csv
+raspberry_02-Feb-2022-20-04_frenada repentina_Data-Mv2Fjh23ZUv0zs8puNO.csv
+raspberry_02-Feb-2022-20-05_frenada repentina_Data-Mv2GE5kuLbtayOKAADh.csv
+raspberry_02-Feb-2022-20-07_frenada repentina_Data-Mv2GjLnIwNMl56-k3B4.csv
+raspberry_02-Feb-2022-20-08_giro derecho agresivo_Data-Mv2HSOB7ABwlXlcqhJ8.csv
+raspberry_02-Feb-2022-20-09_giro derecho agresivo_Data-Mv2ISfQUC6sTST7r5vK.csv
+raspberry_02-Feb-2022-20-11_giro derecho agresivo_Data-Mv2J5sXkAQlaBieponq.csv
+raspberry_02-Feb-2022-20-14_giro izquierdo agresivo_Data-Mv2JJRm4Wr7hGezVRa4.csv
+raspberry_02-Feb-2022-20-15_giro izquierdo agresivo_Data-Mv2JoflmGmLbEwyIi2a.csv
+raspberry_02-Feb-2022-20-15_giro izquierdo agresivo_Data-Mv2KWwfC9rOulb8X-fO.csv
+raspberry_02-Feb-2022-20-19_cambio de línea agresivo izquierda_Data-Mv2LMYtkG1kF19_Sfkm.csv
+raspberry_02-Feb-2022-20-22_cambio de línea agresivo izquierda_Data-Mv2LjjP0SLKY6zw_7Y9.csv
+raspberry_02-Feb-2022-20-22_cambio de línea agresivo izquierda_Data-Mv2MKSGRnWKiAQnOt6X.csv
+raspberry_02-Feb-2022-20-23_cambio de línea agresivo izquierda_Data-Mv2Mb788s0lYvuHjbpz.csv
+raspberry_02-Feb-2022-20-27_cambio de línea agresivo derecha_Data-Mv2Mn1vBfoSLiFW3DBh.csv
+raspberry_02-Feb-2022-20-29_cambio de línea agresivo derecha_Data-Mv2N4sqCOBh_ItfGkmE.csv
+raspberry_02-Feb-2022-20-30_cambio de línea agresivo derecha_Data-Mv2NI8EB-OO2UcM0y90.csv
+raspberry_02-Feb-2022-20-32_giro derecho agresivo_Data-Mv2NjnReR0ap6oLLm_L.csv
+raspberry_02-Feb-2022-20-33_aceleración repentina_Data-Mv2OBsiMjeYsWr6NjI-.csv
+smartphone_02-Feb-2022-19-57_aceleración repentina_Data-Muy3Q2oTXSwbX4Xkp8f.csv
+smartphone_02-Feb-2022-19-58_aceleración repentina_Data-Mv1jhGeVWb8RdpInpVm.csv
+smartphone_02-Feb-2022-19-59_aceleración repentina_Data-Mv1jxE4ZYJvJ9AVKae1.csv
+smartphone_02-Feb-2022-20-00_aceleración repentina_Data-Mv1kHL-lY_3iTVHFvrQ.csv
+smartphone_02-Feb-2022-20-01_frenada repentina_Data-Mv2EUSpYPrGpMG3qjaD.csv
+smartphone_02-Feb-2022-20-04_frenada repentina_Data-Mv2FX62bOlZJlm8VJJx.csv
+smartphone_02-Feb-2022-20-05_frenada repentina_Data-Mv2GBn8gMBZPF-trJkU.csv
+smartphone_02-Feb-2022-20-07_frenada repentina_Data-Mv2GkS5qm4edjQ9DFUt.csv
+smartphone_02-Feb-2022-20-08_giro derecho agresivo_Data-Mv2HcS-UQTGljMc2hun.csv
+smartphone_02-Feb-2022-20-08_giro derecho agresivo_Data-Mv2IT2Zlivu4dCGr-_h.csv
+smartphone_02-Feb-2022-20-11_giro derecho agresivo_Data-Mv2JBgPWQPh3YScpKb3.csv
+smartphone_02-Feb-2022-20-14_giro izquierdo agresivo_Data-Mv2JuPQFlZdPc9e8f1U.csv
+smartphone_02-Feb-2022-20-14_giro izquierdo agresivo_Data-Mv2JXMh1X_V30cbr0Mw.csv
+smartphone_02-Feb-2022-20-15_giro izquierdo agresivo_Data-Mv2KZyC2nSbvYeWyEmh.csv
+smartphone_02-Feb-2022-20-19_cambio de línea agresivo izquierda_Data-Mv2L_EBJR_gDU3LpwVs.csv
+smartphone_02-Feb-2022-20-21_cambio de línea agresivo izquierda_Data-Mv2LixfwEokL4QCgN_p.csv
+smartphone_02-Feb-2022-20-22_cambio de línea agresivo izquierda_Data-Mv2MN6xv2W3Rv1Rmb_Z.csv
+smartphone_02-Feb-2022-20-23_cambio de línea agresivo izquierda_Data-Mv2MemmvWzydRwVTgDS.csv
+smartphone_02-Feb-2022-20-26_cambio de línea agresivo derecha_Data-Mv2MrzIVJOQsCqDJHcb.csv
+smartphone_02-Feb-2022-20-28_cambio de línea agresivo derecha_Data-Mv2N7NHrCFwdhHsnNZ0.csv
+smartphone_02-Feb-2022-20-30_cambio de línea agresivo derecha_Data-Mv2NIygZ9Lhr_sPsKy6.csv
+smartphone_02-Feb-2022-20-31_giro derecho agresivo_Data-Mv2Nk_4aV4M_KufahA0.csv
+smartphone_02-Feb-2022-20-32_aceleración repentina_Data-Mv2OJUr9aMogCGLLtN3.csv
+smartphone_02-Feb-2022-20-33_aceleración repentina_Data-Mv2OJUr9aMogCGLLtN3.csv
+smartphone_23-Jan-2022-18-43_aceleración repentina_Data-Mu8hbCkU1mWBMDFMxXM.csv
+smartphone_23-Jan-2022-18-45_aceleración repentina_Data-Mu8hi0cBwFcdYjZjBGt.csv
+smartphone_23-Jan-2022-18-46_aceleración repentina_Data-Mu8hkmaURzvBiJ1M7HR.csv
+smartphone_23-Jan-2022-18-48_frenada repentina_Data-Mu8hlpX2q5OFyRdDEPR.csv
+smartphone_23-Jan-2022-18-49_frenada repentina_Data-Mu8hmYsKr0gDXTtH4_T.csv
+smartphone_23-Jan-2022-18-50_frenada repentina_Data-Mu8hnG_OsdtnMCKUAdX.csv
+smartphone_23-Jan-2022-18-51_frenada repentina_Data-Mu8hns_8QMJT_dUfYdU.csv
+smartphone_23-Jan-2022-18-58_aceleración repentina_Data-Mu8hoO79KoYrhfteErv.csv
+smartphone_23-Jan-2022-19-02_giro derecho agresivo_Data-Mu8hq8e9oRgJ8QzdQO7.csv
+smartphone_23-Jan-2022-19-03_giro derecho agresivo_Data-Mu8hqo5-zpKQj-enaeo.csv
+smartphone_23-Jan-2022-19-04_giro derecho agresivo_Data-Mu8hrOU8YXIjjTdqy7E.csv
+smartphone_23-Jan-2022-19-07_giro derecho agresivo_Data-Mu8hsZd_p_mSgXotuHD.csv
+smartphone_23-Jan-2022-19-08_giro izquierdo agresivo_Data-Mu8ht1cvr6sdTrBxjrE.csv
+smartphone_23-Jan-2022-19-09_giro izquierdo agresivo_Data-Mu8htc5ZwKQ2CeOi9vC.csv
+smartphone_23-Jan-2022-19-10_giro izquierdo agresivo_Data-Mu8hwQcQ4pDRMYWDiqK.csv
+smartphone_23-Jan-2022-19-13_giro izquierdo agresivo_Data-Mu8hxArWaxvmMTZL3YL.csv
+smartphone_23-Jan-2022-19-15_cambio de línea agresivo izquierda_Data-Mu8hxkqg8sK6TjXkaxG.csv
+smartphone_23-Jan-2022-19-17_cambio de línea agresivo izquierda_Data-Mu8hyMj45nyvhS3nr-W.csv
+smartphone_23-Jan-2022-19-18_cambio de línea agresivo izquierda_Data-Mu8hz2B3EFQiez_YqVP.csv
+smartphone_23-Jan-2022-19-20_cambio de línea agresivo derecha_Data-Mu8hzXuOkhFAfcvId85.csv
+smartphone_23-Jan-2022-19-22_cambio de línea agresivo derecha_Data-Mu8i-4UzIQ0uGWQHPlW.csv
