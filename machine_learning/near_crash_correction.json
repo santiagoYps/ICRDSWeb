@@ -1,0 +1,493 @@
+{"smartphone_02-Feb-2022-20-32_aceleración repentina_Data-Mv2OJUr9aMogCGLLtN3.csv": {
+    "add_near_crash": {
+      "min_ID": [41242, 41351, 41737],
+      "max_ID": [41265, 41376, 41769]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": 41193,
+        "offset": 0.4152007421048788
+      },
+      "accY": {
+        "stand_by": 41163,
+        "offset": 1.2531864805655046
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-31_cambio de línea agresivo derecha_Data-Mv2Nk_4aV4M_KufahA0.csv": {
+    "add_near_crash": {
+      "min_ID": [41045],
+      "max_ID": [41076]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": [41115, 41141],
+        "offset": 0.981024044531363
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-30_cambio de línea agresivo derecha_Data-Mv2NIygZ9Lhr_sPsKy6.csv": {
+    "add_near_crash": {
+      "min_ID": [40810],
+      "max_ID": [40840]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": 40782,
+        "offset": 0.5644568944893157
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-28_cambio de línea agresivo derecha_Data-Mv2N7NHrCFwdhHsnNZ0.csv": {
+    "add_near_crash": {
+      "min_ID": [40125, 40210],
+      "max_ID": [40171, 40255]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": 39978,
+        "offset": 0.6312205920292137
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-26_cambio de línea agresivo derecha_Data-Mv2MrzIVJOQsCqDJHcb.csv": {
+    "add_near_crash": {
+      "min_ID": [39281, 39412],
+      "max_ID": [39327, 39460]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": 39124,
+        "offset": 0.6235242855918115
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-23_cambio de línea agresivo izquierda_Data-Mv2MemmvWzydRwVTgDS.csv": {
+    "add_near_crash": {
+      "min_ID": [38941],
+      "max_ID": [38970]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": 38867,
+        "offset": 0.6760390162975951
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-22_cambio de línea agresivo izquierda_Data-Mv2MN6xv2W3Rv1Rmb_Z.csv": {
+    "add_near_crash": {
+      "min_ID": [38462],
+      "max_ID": [38509]
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-21_cambio de línea agresivo izquierda_Data-Mv2LixfwEokL4QCgN_p.csv": {
+    "add_near_crash": {
+      "min_ID": [37900, 37993],
+      "max_ID": [37947, 38050]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": 37730,
+        "offset": 0.4504488648417182
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-19_cambio de línea agresivo izquierda_Data-Mv2L_EBJR_gDU3LpwVs.csv": {
+    "add_near_crash": {
+      "min_ID": [37480],
+      "max_ID": [37525]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": 37352,
+        "offset": 0.40989164
+      },
+      "accY": {
+        "stand_by": 37338,
+        "offset": 1.438008073309209
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-15_giro izquierdo agresivo_Data-Mv2KZyC2nSbvYeWyEmh.csv": {
+    "add_near_crash": {
+      "min_ID": [37146],
+      "max_ID": [37212]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": 36621,
+        "offset": 0.5186674197517158
+      },
+      "accY": {
+        "stand_by": 36610,
+        "offset": 1.4471294609427265
+      }
+    }
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-14_giro izquierdo agresivo_Data-Mv2JuPQFlZdPc9e8f1U.csv": {
+    "add_near_crash": {
+      "min_ID": [36472],
+      "max_ID": [36512]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": 36342,
+        "offset": 0.5187684167253773
+      },
+      "accY": {
+        "stand_by": 36340,
+        "offset": 1.3547179582624584
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-14_giro izquierdo agresivo_Data-Mv2JXMh1X_V30cbr0Mw.csv": {
+    "add_near_crash": {
+      "min_ID": [36157],
+      "max_ID": [36202]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [36063,36147],
+        "offset": 0.8382796672775464
+      }
+    }
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-11_giro derecho agresivo_Data-Mv2JBgPWQPh3YScpKb3.csv": {
+    "add_near_crash": {
+      "min_ID": [35675],
+      "max_ID": [35714]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": 35528,
+        "offset": 0.9453518812855085
+      },
+      "accY": {
+        "stand_by": 35525,
+        "offset": 1.241419167745681
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-08_giro derecho agresivo_Data-Mv2IT2Zlivu4dCGr-_h.csv": {
+    "add_near_crash": {
+      "min_ID": [35036],
+      "max_ID": [35078]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": 34872,
+        "offset": 0.9225510870906669
+      },
+      "accY": {
+        "stand_by": 34866,
+        "offset": 1.2296117360775287
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-08_giro derecho agresivo_Data-Mv2HcS-UQTGljMc2hun.csv": {
+    "add_near_crash": {
+      "min_ID": [34649],
+      "max_ID": [34699]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": 34525,
+        "offset": 0.9310527317451708
+      },
+      "accY": {
+        "stand_by": 34513,
+        "offset": 1.2321754637218656
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-07_frenada repentina_Data-Mv2GkS5qm4edjQ9DFUt.csv": {
+    "add_near_crash": {
+      "min_ID": [34369],
+      "max_ID": [34414]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [34425,34443],
+        "offset": 1.2003154001737897
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-05_frenada repentina_Data-Mv2GBn8gMBZPF-trJkU.csv": {
+    "add_near_crash": {
+      "min_ID": [33922, 34072],
+      "max_ID": [33942, 34098]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": 33718,
+        "offset": 1.3043126700555576
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-04_frenada repentina_Data-Mv2FX62bOlZJlm8VJJx.csv": {
+    "add_near_crash": {
+      "min_ID": [33510],
+      "max_ID": [33545]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": 33318,
+        "offset": 1.3640940757024855
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-01_frenada repentina_Data-Mv2EUSpYPrGpMG3qjaD.csv": {
+    "add_near_crash": {
+      "min_ID": [33045],
+      "max_ID": [33071]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [33125, 33238],
+        "offset": 1.3914578515186644
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-20-00_aceleración repentina_Data-Mv1kHL-lY_3iTVHFvrQ.csv": {
+    "add_near_crash": {
+      "min_ID": [32527, 32646],
+      "max_ID": [32551, 32671]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": 32521,
+        "offset": 1.1994023378505263
+      }
+    } 
+  }
+}
+
+{
+  "smartphone_02-Feb-2022-19-59_aceleración repentina_Data-Mv1jxE4ZYJvJ9AVKae1.csv": {
+    "add_near_crash": {
+      "min_ID": [32177],
+      "max_ID": [32224]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": 32175,
+        "offset": 1.4752968256756411
+      }
+    } 
+  }
+}
+
+{
+  "raspberry_02-Feb-2022-19-57_aceleración repentina_Data-Muy3Rwan4A9AhGjSY_j.csv": {
+    "add_near_crash": {
+      "min_ID": [4259],
+      "max_ID": [4308]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": 4254,
+        "offset": 0.8595796433509979
+      },
+      "accPosition": {
+        "stand_by": 4031,
+        "offset": 5.882352941176472
+      }
+    },
+    "interpolation": {
+      "speed": {
+        "max_zone" : 4434,
+        "min_zone" : 4259
+      },
+      "accPosition": {
+        "max_zone" : 4307,
+        "min_zone" : 4261
+      }
+    }
+  }
+}
+
+{
+  "raspberry_02-Feb-2022-19-58_aceleración repentina_Data-Mv1lsdW8oLkQkP2XcI9.csv": {
+    "add_near_crash": {
+      "min_ID": [4727],
+      "max_ID": [4784]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": 4700,
+        "offset": 0.9981091062835985
+      }
+    }
+  }
+}
+
+{
+  "raspberry_02-Feb-2022-19-59_aceleración repentina_Data-Mv1lxNTPcnt0_t3C724.csv": {
+    "add_near_crash": {
+      "min_ID": [5150],
+      "max_ID": [5199]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": 5126,
+        "offset": 0.8869594926687021
+      }
+    }
+  }
+}
+
+{
+  "raspberry_02-Feb-2022-20-00_aceleración repentina_Data-Mv1m25ILfD2v20bDi5Q.csv": {
+    "add_near_crash": {
+      "min_ID": [5461, 5579],
+      "max_ID": [5487, 5601]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": 5445,
+        "offset": 0.6191695396295295
+      }
+    }
+  }
+}
+
+{
+  "raspberry_02-Feb-2022-20-02_frenada repentina_Data-Mv2E_1BnfkXOP6gRM1J.csv": {
+    "add_near_crash": {
+      "min_ID": [5934],
+      "max_ID": [5983]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [6008, 6136],
+        "offset": 0.8262138050176346
+      },
+      "accPosition": {
+        "stand_by": [6037, 6141],
+        "offset": 5.88235294117647
+      }
+    },
+    "interpolation": {
+      "accY": {
+        "max_zone" : 5946,
+        "min_zone" : 5944,
+        "interest_point": 5945
+      }
+    }
+  }
+}
+
+{
+  "raspberry_02-Feb-2022-20-04_frenada repentina_Data-Mv2Fjh23ZUv0zs8puNO.csv": {
+    "add_near_crash": {
+      "min_ID": [6384],
+      "max_ID": [6423]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [6436, 6487],
+        "offset": 0.8273756382231855
+      }
+    }
+  }
+}
+
+{
+  "raspberry_02-Feb-2022-20-05_frenada repentina_Data-Mv2GE5kuLbtayOKAADh.csv": {
+    "add_near_crash": {
+      "min_ID": [6877, 7028],
+      "max_ID": [6900, 7051]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": 6670,
+        "offset": 0.7227104192071038
+      }
+    }
+  }
+}
+
+{
+  "raspberry_02-Feb-2022-20-07_frenada repentina_Data-Mv2GjLnIwNMl56-k3B4.csv": {
+    "add_near_crash": {
+      "min_ID": [7501],
+      "max_ID": [7549]
+    }
+  }
+}
+
+{
+  "raspberry_02-Feb-2022-20-08_giro derecho agresivo_Data-Mv2HSOB7ABwlXlcqhJ8.csv": {
+    "add_near_crash": {
+      "min_ID": [7798],
+      "max_ID": [7840]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": 7665,
+        "offset": -1.350449530593526
+      },
+      "accY": {
+        "stand_by": 7660,
+        "offset": 0.6778172446221886
+      }
+    }
+  }
+}
