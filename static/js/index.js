@@ -245,11 +245,11 @@ function filterTrips() {
         : true;
       
       results[1] = (filters.vehicle.active)
-        ? filters.vehicle.filter( tr.children[2].textContent )
+        ? filters.vehicle.filter( tr.children[3].textContent )
         : true;
 
       results[2] = (filters.route.active)
-        ? filters.route.filter( tr.children[3].textContent )
+        ? filters.route.filter( tr.children[4].textContent )
         : true;
 
       if ( results.includes(false) )

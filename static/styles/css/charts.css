@@ -17,6 +17,10 @@
   background-image: url(../../icons/download.png);
 }
 
+.icon-ai {
+  background-image: url(../../icons/ai.png);
+}
+
 .loading-chart {
   margin-left: auto;
   margin-right: auto;

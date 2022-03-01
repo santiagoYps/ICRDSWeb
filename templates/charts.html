@@ -28,13 +28,21 @@
     <section class="section py-0">
         <div class="level">
             <h2 class="level-left title is-4 mb-0">Información de trayecto</h2>
+            <div class="level-right">
             <a href="{{ url_for('download_csv', data_id=tripId) }}">
-                <button class="level-right button is-info is-light">
+                <button class="mr-4 button is-info is-light">
                     <span>Descargar CSV</span>
                     <span class="icon icon-image icon-download">
                     </span>
                 </button>
             </a>
+            <a href="{{ url_for('check_nearcrash', data_id=tripId) }}">
+                <button class="button is-info is-dark">
+                    <span>Comprobar <i>Near Crash</i></span>
+                    <span class="icon icon-image icon-ai"></span>
+                </button>
+            </a>
+            </div>
         </div>
         
         <div class="columns is-multiline is-centered box" id="trip-info" data-trip-id="{{ tripId }}">

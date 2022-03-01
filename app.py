@@ -1,15 +1,20 @@
+import json
+import os
 from turtle import width
+
 import firebase_admin
 import pandas as pd
-import json
+import numpy as np
+from scipy import stats as st
+from machine_learning.pykalman import KalmanFilter
+from joblib import load
+
 import plotly
 import plotly.express as px
 import plotly.graph_objects as go
-import os
-
-from flask import Flask, render_template, request, Response, make_response, send_from_directory, abort
-from firebase_admin import credentials
-from firebase_admin import db
+from firebase_admin import credentials, db
+from flask import (Flask, Response, abort, make_response, render_template,
+                   request, send_from_directory)
 
 # Init flask app
 app = Flask(__name__)
@@ -112,13 +117,17 @@ def line_chart(df, variable):
         x=x,
         y = no_crash_df[variable],
         name = 'Sin evento',
-        marker_color='#00D1B1'
+        marker_color='#00D1B1',
+        text= no_crash_df.index,
+        hovertemplate="X = %{x}<br>Y = %{y}<br>ID = %{text}"
     ))
     fig.add_trace(go.Scatter(
         x=x,
         y=near_crash_df[variable],
         name='Near-Crash',
-        marker_color='#FF385F'
+        marker_color='#FF385F',
+        text=near_crash_df.index,
+        hovertemplate="X = %{x}<br>Y = %{y}<br>ID = %{text}"
     ))
     
     fig = update_layout(fig, f'Gráfico de linea de la {variables_dict[variable]}', 
@@ -191,6 +200,89 @@ def scatter_matrix_chart(df):
     fig = update_layout(fig, 'Matriz de dipsersión',height=1000)
     return fig
 
+def sliding_windows(df, features, window_size=20):
+    """Create a sliding window with a defined window size and return the calculation for each record inside the sliding window.
+
+    The calculations made are for each time window: 
+    - The mean.
+    - The median.
+    - The standard deviation.
+    - The maximum and minimum value.
+    - The trend.
+
+    Note the process is explained in greater detail in: <TODO: reference link>
+
+    Args:
+        dataset (numpy.array): An array with the data taken on a vehicle trip, 
+        composed for rows: dataset registers and columns: first data index, and subsequent dataset event features.
+        window_size (int, optional): number Number of registers contained in the time window. Defaults to 10.
+        event_features (str, optional): the names of dataset features. Defaults to "X".
+
+    Returns:
+        tuple: A tuple structured like this: (sliding window id, sliding window featured data, sliding window label data, features name)
+    """
+    features = ["id", *features,  "eventClass"]
+    dataset = df[features].to_numpy()
+
+    sld_window = np.lib.stride_tricks.sliding_window_view(dataset, window_size, axis=0) #[::1, :] Add this for define window step
+
+    # Splitin dataset id
+    id = sld_window[:,0:1,:]
+    sld_window_id = np.concatenate((id[:,:,0], id[:,:,-1]), axis=1) # get the first and last id from registers in every sliding window
+
+    # Spliting the dataset (features, label)
+    separator = dataset.shape[1] - 1 # Split the last page corresponding to the eventClass
+    features_data = sld_window[:, 1:separator, :] # Get the features of the data in every sliding window
+    label_data = sld_window[:, separator, :] # Get the labels of the data in every sliding window
+
+    # Processing the sliding window
+    # Get the mean, median, std, max and min value
+    mean = features_data.mean(axis=2)
+    median = np.median(features_data, axis=2)
+    std = features_data.std(axis=2)
+    max_val = features_data.max(axis=2)
+    min_val = features_data.min(axis=2)
+    # Get tendency
+    divider = np.array([mean[0], *mean[:-1]])
+    tendency = mean/np.where(divider == 0, 1, divider)
+    label = st.mode(label_data, axis=1)[0]
+
+    # Concatenate processed sliding window
+    sld_window_features = np.concatenate((mean, median, std, max_val, min_val, tendency), axis=1)
+    # Reshape label for sklearn standard
+    label = label.reshape(label.shape[0])
+
+    # Make input algorithm df
+    X = pd.DataFrame(sld_window_features)
+    X[["first","last"]] = sld_window_id
+    X.set_index(["first","last"], inplace=True)
+
+    return (X, label)
+
+def data_filter(df_filter):
+    """Make Kalman filter to specified features for a dataset
+
+    Args:
+        df (Pandas.DataFrame): The dataframe with driving data
+
+    Returns:
+        Pandas.DataFrame: The dataframe with driving data transformed through the Kalman Filter
+    """
+    features = ["accX", "accY", "velAngZ", "magX", "magY"]
+    for var in features:
+        data = df_filter[var]
+
+        # Kalman filter process
+        kf = KalmanFilter(initial_state_mean = data.iloc[0], n_dim_obs=1)
+        filter_data = kf.em(data).filter(data)[0].T[0]
+        filter_data_s = pd.Series(np.array(filter_data), name=var)
+        df_filter[var] = filter_data_s
+
+        # Normalized magnetometer data with min-max normalization
+        if var == "magX" or var =="magY":
+            normalized_data = (data-data.min())/(data.max()-data.min())
+            df_filter[var] = normalized_data
+    return df_filter
 
 @app.route("/")
 def query_trips():
@@ -333,3 +425,78 @@ def download_csv(data_id):
         return send_from_directory(app.config['CSV_PATH'], path=csv_name, as_attachment=True)
     except FileNotFoundError:
         abort(404)
+
+# Check near crash routes
+@app.route('/checkNearCrash/<string:data_id>')
+def check_nearcrash(data_id):
+    """[summary]
+    """
+    # Get trip info from firebase
+    ref = db.reference('/tripList/' + data_id)
+    trip = ref.get()
+    
+    device_name = str(trip['device']).lower()
+    route_name = str(trip['route']).lower()
+
+    # Get trip data from firebase
+    ref_trip = db.reference('/tripData/'+ device_name + "/" + data_id)
+    # Transform json to dataframe
+    firebase_data = ref_trip.get()
+    df = create_df(firebase_data)
+
+    # TODO: before filter is need to manage the offset of the data, for this reason in the experiments we need to make a standby time
+    max_standby = 80
+    var_with_offset = ["accY","accX"]
+    for var_offset in var_with_offset:
+        offset = df.iloc[:max_standby][var_offset].mean()
+        df[var_offset] = df[var_offset] - offset
+
+    df["id"] = df.index
+    df.reset_index(drop=True, inplace=True)
+
+    # Algorithms and combinantions
+    clasifiers = ["clf_sudden_braking_smartphone", "clf_sudden_braking_raspberry",
+                  "clf_sudden_acceleration_smartphone", "clf_sudden_acceleration_raspberry",
+                  "clf_chg_line_right_smartphone", "clf_chg_line_right_raspberry",
+                  "clf_chg_line_left_smartphone", "clf_chg_line_left_raspberry",
+                  "clf_agg_turn_right_smartphone", "clf_agg_turn_right_raspberry",
+                  "clf_agg_turn_left_smartphone", "clf_agg_turn_left_raspberry"]
+    features = [["speed","accY"], ["speed","accY"],
+                ["speed","accY"], ["speed", "accPosition", "accY"],
+                ["accX", "velAngZ"], ["accX", "velAngZ"],
+                ["accX", "velAngZ"], ["accX", "velAngZ"],
+                ["accX" ,"accY", "velAngZ", "magX", "magY"], ["speed", "accX", "accY", "velAngZ", "magX"],
+                ["accX" ,"accY", "velAngZ", "magX", "magY"], ["speed", "accX", "accY", "velAngZ", "magX"]]
+
+    if device_name == "smartphone":
+        clasifiers = clasifiers[::2]
+        features = features[::2]
+    else:
+        clasifiers = clasifiers[1::2]
+        features = features[1::2]
+
+    # Make filter kalman for all data
+    print("filter kalman")
+    df_filtered = data_filter(df)
+    print("exit kalman")
+    # Check near crash
+    near_crash = {}
+    for c, f in zip(clasifiers, features):
+    #Make sliding window
+        X, y = sliding_windows(df_filtered, f, 40)
+
+        # Check near-crash
+        clf = load(str("./machine_learning/built_algorithms/"+c+".joblib"))
+        y_predict = clf.predict(X.values)
+        y_predict_proba = clf.predict_proba(X.values)[:,1]
+
+        if (len(np.where(y_predict == 1.0)[0]) != 0):
+            near_crash_df = X.iloc[np.where(y_predict == 1.0)[0]]
+            near_crash[c] = near_crash_df
+    print("Cantidad de eventos detectados {}, Eventos: [{}]".format(len(near_crash), near_crash.keys()))
+    stepsize = 1
+    for id in near_crash.values():
+        data = id.index.get_level_values('first')
+        print("Id de los datos:\n",data)
+        nc = np.split(data.values, np.where(np.diff(data.values) != stepsize)[0]+1)
+        print("Near crash split:\n",nc)
