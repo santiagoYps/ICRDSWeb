@@ -3,16 +3,19 @@ import os
 from turtle import width
 
 import firebase_admin
+from firebase_admin import credentials, db
+
 import pandas as pd
 import numpy as np
 from scipy import stats as st
 from machine_learning.pykalman import KalmanFilter
+import itertools
 from joblib import load
 
 import plotly
 import plotly.express as px
 import plotly.graph_objects as go
-from firebase_admin import credentials, db
+
 from flask import (Flask, Response, abort, make_response, render_template,
                    request, send_from_directory)
 
@@ -32,7 +35,7 @@ variables_dict = {'speed':'Velocidad','accPosition':'Presión del acelerador',
                   'accX':'Aceleración en X', 'accY':'Aceleración en Y', 'accZ':'Aceleración en Z',
                   'magX':'Fuerza magnética en X','magY':'Fuerza magnética en Y','magZ':'Fuerza magnética en Z',
                   'velAngX':'Velocidad angular en X','velAngY':'Velocidad angular en Y','velAngZ':'Velocidad angular en Z'}
-units_dict = {'speed':'m/s','accPosition':'% de presión',
+units_dict = {'speed':'km/h','accPosition':'% de presión',
               'accX':'m/s\u00B2', 'accY':'m/s\u00B2', 'accZ':'m/s\u00B2',
               'magX':'\u03BC T','magY':'\u03BC T','magZ':'\u03BC T',
               'velAngX':'rad/seg','velAngY':'rad/seg','velAngZ':'rad/seg'}
@@ -221,8 +224,8 @@ def sliding_windows(df, features, window_size=20):
     Returns:
         tuple: A tuple structured like this: (sliding window id, sliding window featured data, sliding window label data, features name)
     """
-    features = ["id", *features,  "eventClass"]
-    dataset = df[features].to_numpy()
+    relevant_features = ["id", *features,  "eventClass"]
+    dataset = df[relevant_features].to_numpy()
 
     sld_window = np.lib.stride_tricks.sliding_window_view(dataset, window_size, axis=0) #[::1, :] Add this for define window step
 
@@ -252,8 +255,15 @@ def sliding_windows(df, features, window_size=20):
     # Reshape label for sklearn standard
     label = label.reshape(label.shape[0])
 
+    # Make the features names
+    e_n = len(features) # Events number
+    measurements_names = [["mean"]*e_n, ["median"]*e_n, ["std"]*e_n, ["max_val"]*e_n, ["min_val"]*e_n, ["tendency"]*e_n]
+    measurements_names = list(itertools.chain(*measurements_names))
+    events_names = features*(len(measurements_names)//e_n)
+    sld_window_features_names = list(map('_'.join, zip(measurements_names, events_names)))
+
     # Make input algorithm df
-    X = pd.DataFrame(sld_window_features)
+    X = pd.DataFrame(sld_window_features, columns=sld_window_features_names)
     X[["first","last"]] = sld_window_id
     X.set_index(["first","last"], inplace=True)
 
@@ -283,6 +293,55 @@ def data_filter(df_filter):
             normalized_data = (data-data.min())/(data.max()-data.min())
             df_filter[var] = normalized_data
     return df_filter
+
+def find_near_crashes(df_filtered, clasifiers, features, windows_size=40, register_number=50):
+    """Make all process to find near crashes
+
+    - First make a sliding windows with a specific windows size
+    - Next predict near crashes with Machine Learning algorithms
+    - Finally define near crashes merging all near crashes predicted
+
+    Args:
+        df_filtered (pandas.DataFrame): A Dataframe with all captured data filtered
+        clasifiers (str): The names of the algorithms to use for Machine Learning classification.
+        features (str): The names of the captured features to use as input to Machine Learning algorithms
+        windows_size (int): The windows size for sliding window. Default: 40.
+        register_number (int): The number to define the minimum records to consider the predicted near crash as a true near crash
+
+    Returns:
+        tuple: First element in the tuple is a list with each near crash event predicted.
+               the second element in the tuple is 
+    """
+    output = [] # Array with all start indices where sliding windows have an almost near crash event
+    # Check near crash for every sliding window
+    for c, f in zip(clasifiers, features):
+        # Make sliding window
+        X, y = sliding_windows(df_filtered, f, windows_size)
+        # Check near-crash
+        clf = load(str("./machine_learning/built_algorithms/"+c+".joblib"))
+        y_predict = clf.predict(X.values)
+        y_predict_proba = clf.predict_proba(X.values)[:,1]
+        if (len(np.where(y_predict == 1.0)[0]) != 0):
+            near_crash_predict = X.iloc[np.where(y_predict == 1.0)[0]]
+            output.append(near_crash_predict.index.get_level_values('first'))  # Get the first index for every sliding window
+    
+    # Evaluate the Near Crash output for get the especified event
+    near_crashes = np.unique(np.concatenate(tuple(output)))
+    stepsize = 1
+    event_ocurrence = np.split(near_crashes, np.where(np.diff(near_crashes) != stepsize)[0]+1) # Split consecutive data
+    
+    # Join separate events that correspond to oneself
+    joined_events = [event_ocurrence[0]]
+    for i, d in enumerate(event_ocurrence[:-1]):
+        if (event_ocurrence[i][-1] + windows_size) >= event_ocurrence[i+1][0]:  # TODO: evaluate the value to include in range
+            joined_events[-1] = np.concatenate((joined_events[-1], event_ocurrence[i+1]))
+        else:
+            joined_events.append(event_ocurrence[i+1])
+    
+    # Select the events that comply with at least 50 records
+    selected_near_crashes = [x for x in joined_events if (x[-1] + windows_size)-x[0] >= register_number] # Select the near crash that satisfy the minimum records condition
+
+    return (selected_near_crashes, X)
 
 @app.route("/")
 def query_trips():
@@ -436,7 +495,6 @@ def check_nearcrash(data_id):
     trip = ref.get()
     
     device_name = str(trip['device']).lower()
-    route_name = str(trip['route']).lower()
 
     # Get trip data from firebase
     ref_trip = db.reference('/tripData/'+ device_name + "/" + data_id)
@@ -444,8 +502,12 @@ def check_nearcrash(data_id):
     firebase_data = ref_trip.get()
     df = create_df(firebase_data)
 
+    # TODO: Post Processing Optimizer Parameters maybe optimize
+    max_standby = 20 # The max number of captured data with the car stoped
+    windows_size = 40 # The size of the sliding window
+    register_number = 50 # The minimum number of records to define a near crash
+
     # TODO: before filter is need to manage the offset of the data, for this reason in the experiments we need to make a standby time
-    max_standby = 80
     var_with_offset = ["accY","accX"]
     for var_offset in var_with_offset:
         offset = df.iloc[:max_standby][var_offset].mean()
@@ -467,7 +529,6 @@ def check_nearcrash(data_id):
                 ["accX", "velAngZ"], ["accX", "velAngZ"],
                 ["accX" ,"accY", "velAngZ", "magX", "magY"], ["speed", "accX", "accY", "velAngZ", "magX"],
                 ["accX" ,"accY", "velAngZ", "magX", "magY"], ["speed", "accX", "accY", "velAngZ", "magX"]]
-
     if device_name == "smartphone":
         clasifiers = clasifiers[::2]
         features = features[::2]
@@ -476,27 +537,37 @@ def check_nearcrash(data_id):
         features = features[1::2]
 
     # Make filter kalman for all data
-    print("filter kalman")
+    print("Start filter kalman")
     df_filtered = data_filter(df)
-    print("exit kalman")
-    # Check near crash
-    near_crash = {}
-    for c, f in zip(clasifiers, features):
-    #Make sliding window
-        X, y = sliding_windows(df_filtered, f, 40)
+    print("End filter kalman")
 
-        # Check near-crash
-        clf = load(str("./machine_learning/built_algorithms/"+c+".joblib"))
-        y_predict = clf.predict(X.values)
-        y_predict_proba = clf.predict_proba(X.values)[:,1]
+    # Find near crashes
+    near_crashes, near_crashes_df = find_near_crashes(df_filtered, clasifiers, features, windows_size, register_number)
+    len_s_nc = [len(x) for x in near_crashes]
+    print("\nNear crash select before check size of data (tamaño {}):\n{}"
+          .format(len_s_nc, near_crashes))
 
-        if (len(np.where(y_predict == 1.0)[0]) != 0):
-            near_crash_df = X.iloc[np.where(y_predict == 1.0)[0]]
-            near_crash[c] = near_crash_df
-    print("Cantidad de eventos detectados {}, Eventos: [{}]".format(len(near_crash), near_crash.keys()))
-    stepsize = 1
-    for id in near_crash.values():
-        data = id.index.get_level_values('first')
-        print("Id de los datos:\n",data)
-        nc = np.split(data.values, np.where(np.diff(data.values) != stepsize)[0]+1)
-        print("Near crash split:\n",nc)
+    # Send data to firebase
+    near_crash_ref = db.reference('/').child(f'nearCrashes/{device_name}/{data_id}')
+    for i, near_crash in enumerate(near_crashes, 1):
+        start_near_crash = near_crash[0] + 20
+        end_near_crash = near_crashes_df.loc[near_crash].index.get_level_values('last')[-1] - 20
+
+        print(end_near_crash)
+
+        near_crash_lat_lng = df[["latitude","longitude"]].loc[df["id"].isin([start_near_crash, end_near_crash])].mean(axis=0)
+        time = df["timestamp"].loc[df["id"].isin([start_near_crash, end_near_crash])]
+        near_crash_data = near_crashes_df.loc[near_crash].droplevel(['last'])
+        index = near_crash_data.index.astype('int64')
+        near_crash_data.set_index(index, inplace=True)
+
+        near_crash_dict = {}
+        near_crash_dict["id_start"] = start_near_crash
+        near_crash_dict["id_end"] = end_near_crash
+        near_crash_dict["timestamp_start"] = str(time.iloc[0].to_pydatetime())
+        near_crash_dict["timestamp_end"] = str(time.iloc[1].to_pydatetime())
+        near_crash_dict["latitude"] = near_crash_lat_lng["latitude"]
+        near_crash_dict["longitude"] = near_crash_lat_lng["longitude"]
+        near_crash_dict["data"] = near_crash_data.to_dict()
+
+        near_crash_ref.child(f'nearCrash {i}').set(near_crash_dict)
