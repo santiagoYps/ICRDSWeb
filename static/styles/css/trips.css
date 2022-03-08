@@ -1,0 +1,27 @@
+.custom-notification {
+  position: fixed;
+  bottom: 100px;
+  right: 10px;
+  box-shadow: 0 .5em 1em -.125em rgba(10,10,10,.1),0 0 0 1px rgba(10,10,10,.02)
+}
+
+.icon-image {
+  display: inline-block;
+  margin-right: 10px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+.icon-delete {
+  background-image: url(../../icons/delete.png);
+}
+
+.icon-details {
+  background-image: url(../../icons/details.png);
+}
+
+.icon-clear {
+  background-image: url(../../icons/close-circle.png);
+}

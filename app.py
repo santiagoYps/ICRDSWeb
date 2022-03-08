@@ -285,6 +285,11 @@ def data_filter(df_filter):
     return df_filter
 
 @app.route("/")
+def home():
+    return render_template('home.html')
+
+
+@app.route("/trips")
 def query_trips():
     """Query trips, get data from trips and show
 
@@ -297,7 +302,7 @@ def query_trips():
         'title': 'Información de trayectos',
         'trips': {} if (tripList == None) else tripList
     }
-    return render_template('index.html', **data)
+    return render_template('trips.html', **data)
 
 @app.route("/trips/details/<id>", methods=["GET", "POST"])
 def trip_details(id):
@@ -500,3 +505,7 @@ def check_nearcrash(data_id):
         print("Id de los datos:\n",data)
         nc = np.split(data.values, np.where(np.diff(data.values) != stepsize)[0]+1)
         print("Near crash split:\n",nc)
+
+@app.route('/maps')
+def maps():
+    return render_template('maps.html')

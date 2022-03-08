@@ -1,0 +1,35 @@
+main {
+    height: 100vh;
+}
+
+aside {
+    max-width: 250px;
+}
+
+.map-container {
+    position: relative;
+    height: 100vh;
+}
+
+.map-buttons{
+    position: absolute;
+    top: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.map-button {
+    height: 32px;
+    margin-right: 20px;
+}
+
+.map {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+}
+
+.menu-label {
+    color: white;
+    font-weight: 700;
+}
