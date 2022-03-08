@@ -490,6 +490,31 @@ def download_csv(data_id):
 def check_nearcrash(data_id):
     """[summary]
     """
+    #TODO: to add in the show map part
+    #TODO: El codigo solo sirve en el caso de que se seleccione mostrar una ruta en especifico, para otro caso traer todas las rutas
+    ref_near_crashes = db.reference('/nearCrashes/smartphone/-Mu8hzXuOkhFAfcvId85') # TODO: check device and route id
+    firebase_near_crash_data = ref_near_crashes.get()
+
+    if isinstance(firebase_near_crash_data, dict):
+        remove_data = lambda sub: { key1: remove_data(val1) if isinstance(val1, dict) else val1 # Delete near crash data because to print map this is not necesary
+                      for key1, val1 in sub.items() if key1 != 'data'}
+        res = remove_data(firebase_near_crash_data)
+    else:
+        print("Firebase return the data like list type")
+        res = 0
+    print(res)
+    rows = list(filter(None, res.values())) if isinstance(res, dict) else filter(None, res)
+    # Create a data frame and set index by id
+    df = pd.json_normalize(rows)
+    df['sliding_window_number'] = df['id_end'] - df['id_start']
+    fig = px.density_mapbox(df, lat='latitude', lon='longitude', z='sliding_window_number', radius=10,
+                        center=dict(lat=0, lon=180), zoom=0,
+                        mapbox_style="open-street-map")
+
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template('maps.html', graphJSON=graphJSON)
+
+    """
     # Get trip info from firebase
     ref = db.reference('/tripList/' + data_id)
     trip = ref.get()
@@ -571,3 +596,4 @@ def check_nearcrash(data_id):
         near_crash_dict["data"] = near_crash_data.to_dict()
 
         near_crash_ref.child(f'nearCrash {i}').set(near_crash_dict)
+        """
