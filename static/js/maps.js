@@ -1,3 +1,7 @@
+const sidebar = document.querySelector("aside");
+const closeSidebar = document.querySelector(".sidebar-close-btn");
+const burguerMenu = document.querySelector(".burguer-menu");
+
 const deviceSelect = document.getElementById("device-filter");
 const routeSelect = document.getElementById("route-filter");
 const mapButtons = document.getElementById("map-buttons");
@@ -6,6 +10,14 @@ const loading = document.getElementById("map-loading")
 const mapMsg = document.getElementById("map-msg");
 
 let isFirstMap = true;
+
+burguerMenu.addEventListener('click', () => {
+    sidebar.classList.remove("is-hidden");
+});
+
+closeSidebar.addEventListener('click', () => {
+    sidebar.classList.add("is-hidden");
+});
 
 btnLoadMap.addEventListener('click', () => loadMap(mapButtons.children['heat-map']) );
 
