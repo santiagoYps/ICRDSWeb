@@ -1,0 +1,50 @@
+.hero.is-primary {
+    background: linear-gradient(160deg, rgba(0,209,178,1) 24%, rgba(103,213,182,0.4738095067128414) 80%);
+}
+
+.btn-section {
+    position: relative;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 18px;
+    box-shadow: 0px 4px 12px 1px rgba(41, 43, 41, 0.46);
+    cursor: pointer;
+}
+
+.btn-trips {
+    /* background-image: linear-gradient(160deg, #00947e 0%, #00947ea3 100%),
+        url(/static/imgs/visual_data.svg); */
+    background-image: linear-gradient(160deg, #00352d 0%, #026c5ca3 100%),
+        url(/static/imgs/visual_data.svg);
+}
+
+.btn-maps {
+    background-image: linear-gradient(160deg, #00352d 0%, #026c5ca3 100%),
+    url(/static/imgs/map_dark.svg);
+}
+
+.btn-section h2 {
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+a.box:hover {
+    box-shadow: 0px 4px 10px 1px rgba(41, 43, 41, 0.46);
+}
+a.box:active {
+    box-shadow: 0px 4px 6px 1px rgba(41, 43, 41, 0.46);
+}
+
+@media only screen and (min-width: 768px) {
+    .btn-section {
+        height: 350px;
+    }
+    .hero {
+        height: 100vh;
+    }
+}

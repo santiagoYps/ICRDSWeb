@@ -1,24 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="../static/styles/css/bulma.min.css">
+    <link rel="stylesheet" href="../static/styles/css/maps.css">
+    <title>Mapas</title>
 </head>
+
 <body>
-    <div class="box ml-0 mb-6">
-        <div class="loading-chart is-hidden"></div>
-        <div id='chart' class="chart">
-            <!-- Plotly chart will be drawn here-->
+    <main class="">
+        <div class="burguer-menu has-background-primary-light">
+            <i></i>
         </div>
-    </div>
+        <div class="tile is-ancestor mt-0">
+            <aside class="tile is-child menu has-background-primary is-3 py-5 px-5 is-hidden sidebar">
+                <div class="sidebar-close-btn">
+                    <i></i>
+                </div>
+                <div class="is-flex is-flex-direction-column is-align-items-center">
+                    <figure class="image is-64x64">
+                        <img src="/static/imgs/map-search-outline.svg" alt="icono de mapa">
+                    </figure>
+                    <h2 class="title has-text-white has-text-centered">Mapa de resultados</h2>
+                </div>
+                <p class="menu-label mt-6">
+                    Dispositivo
+                </p>
+                <div class="field">
+                    <div class="control">
+                        <div class="select">
+                            <select name="device-filter" id="device-filter">
+                                <option selected disabled>Selec. dispositivo</option>
+                                <option value="smartphone">Smartphone</option>
+                                <option value="raspberry">Raspberry</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <p class="menu-label">
+                    Ruta
+                </p>
+                <div class="field">
+                    <div class="control">
+                        <div class="select">
+                            <select name="route-filter" id="route-filter">
+                                <option selected disabled>Seleccione ruta</option>
+                                <option value="Ruta 1">Ruta 1</option>
+                                <option value="Ruta 2">Ruta 2</option>
+                                <option value="Ruta 3">Ruta 3</option>
+                                <option value="Ruta 4">Ruta 4</option>
+                                <option value="Ruta 5">Ruta 5</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <button id="load-map" class="button is-info is-light mt-4">Cargar Mapa</button>
+            </aside>
+
+            <div class="tile is-child has-background-primary-light map-container px-3 py-2">
+                <div id="map-buttons" class="field is-grouped map-buttons is-hidden">
+                    <button id="heat-map" class="button is-rounded map-button">Mapa de puntos</button>
+                    <button id="dot-map" class="button is-rounded map-button">Mapa de calor</button>
+                </div>
+                <div class="map-msg">
+                    <p id="map-msg"class="subtitle has-text-info-dark has-text-centered">
+                        Seleccione una ruta, un dispositivo y haga click en <strong class="has-text-info">Cargar Mapa</strong>                        
+                    </p>
+                    <progress id="map-loading" class="progress is-small is-info is-hidden" max="100">15%</progress>
+                </div>
+                <div id="map" class="box map">
+                    <div class="loading-chart is-hidden"></div>
+                    <div id='chart' class="chart">
+                        <!-- Plotly chart will be drawn here -->
+                    </div>
+                </div>
+                <!-- <div class="box ml-0 mb-6">
+                    
+                </div> -->
+            </div>
+        </div>
+        
+    </main>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <script type='text/javascript'>
+        var graphs = {{graphJSON | safe}};
+        Plotly.plot('chart',graphs,{});
+    </script>
+    <script src="/static/js/maps.js"></script>
 </body>
 
-<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-<script type='text/javascript'>
-  var graphs = {{graphJSON | safe}};
-  Plotly.plot('chart',graphs,{});
-</script>
 
 </html>
