@@ -492,92 +492,148 @@ def download_csv(data_id):
         abort(404)
 
 # Check near crash routes
-@app.route('/checkNearCrash/<string:data_id>')
-def check_nearcrash(data_id):
+@app.route('/checkNearCrash', methods=["POST"])
+def check_nearcrash():
     """[summary]
     """
-    
-    # Get trip info from firebase
-    ref = db.reference('/tripList/' + data_id)
-    trip = ref.get()
-    
-    device_name = str(trip['device']).lower()
+    if request.method == 'POST':
+        try:
+            request_data = request.get_json()
+            data_id = request_data['tripId']
+            # Get trip info from firebase
+            ref = db.reference('/tripList/' + data_id)
+            trip = ref.get()
+            
+            device_name = str(trip['device']).lower()
 
-    # Get trip data from firebase
-    ref_trip = db.reference('/tripData/'+ device_name + "/" + data_id)
-    # Transform json to dataframe
-    firebase_data = ref_trip.get()
-    df = create_df(firebase_data)
+            # Get trip data from firebase
+            ref_trip = db.reference('/tripData/'+ device_name + "/" + data_id)
+            # Transform json to dataframe
+            firebase_data = ref_trip.get()
+            df = create_df(firebase_data)
 
-    # TODO: Post Processing Optimizer Parameters maybe optimize
-    max_standby = 20 # The max number of captured data with the car stoped
-    windows_size = 40 # The size of the sliding window
-    register_number = 50 # The minimum number of records to define a near crash
+            # TODO: Post Processing Optimizer Parameters maybe optimize
+            max_standby = 20 # The max number of captured data with the car stoped
+            windows_size = 40 # The size of the sliding window
+            register_number = 50 # The minimum number of records to define a near crash
 
-    # TODO: before filter is need to manage the offset of the data, for this reason in the experiments we need to make a standby time
-    var_with_offset = ["accY","accX"]
-    for var_offset in var_with_offset:
-        offset = df.iloc[:max_standby][var_offset].mean()
-        df[var_offset] = df[var_offset] - offset
+            # TODO: before filter is need to manage the offset of the data, for this reason in the experiments we need to make a standby time
+            var_with_offset = ["accY","accX"]
+            for var_offset in var_with_offset:
+                offset = df.iloc[:max_standby][var_offset].mean()
+                df[var_offset] = df[var_offset] - offset
 
-    df["id"] = df.index
-    df.reset_index(drop=True, inplace=True)
+            df["id"] = df.index
+            df.reset_index(drop=True, inplace=True)
 
-    # Algorithms and combinantions
-    clasifiers = ["clf_sudden_braking_smartphone", "clf_sudden_braking_raspberry",
-                  "clf_sudden_acceleration_smartphone", "clf_sudden_acceleration_raspberry",
-                  "clf_chg_line_right_smartphone", "clf_chg_line_right_raspberry",
-                  "clf_chg_line_left_smartphone", "clf_chg_line_left_raspberry",
-                  "clf_agg_turn_right_smartphone", "clf_agg_turn_right_raspberry",
-                  "clf_agg_turn_left_smartphone", "clf_agg_turn_left_raspberry"]
-    features = [["speed","accY"], ["speed","accY"],
-                ["speed","accY"], ["speed", "accPosition", "accY"],
-                ["accX", "velAngZ"], ["accX", "velAngZ"],
-                ["accX", "velAngZ"], ["accX", "velAngZ"],
-                ["accX" ,"accY", "velAngZ", "magX", "magY"], ["speed", "accX", "accY", "velAngZ", "magX"],
-                ["accX" ,"accY", "velAngZ", "magX", "magY"], ["speed", "accX", "accY", "velAngZ", "magX"]]
-    if device_name == "smartphone":
-        clasifiers = clasifiers[::2]
-        features = features[::2]
+            # Algorithms and combinantions
+            clasifiers = ["clf_sudden_braking_smartphone", "clf_sudden_braking_raspberry",
+                        "clf_sudden_acceleration_smartphone", "clf_sudden_acceleration_raspberry",
+                        "clf_chg_line_right_smartphone", "clf_chg_line_right_raspberry",
+                        "clf_chg_line_left_smartphone", "clf_chg_line_left_raspberry",
+                        "clf_agg_turn_right_smartphone", "clf_agg_turn_right_raspberry",
+                        "clf_agg_turn_left_smartphone", "clf_agg_turn_left_raspberry"]
+            features = [["speed","accY"], ["speed","accY"],
+                        ["speed","accY"], ["speed", "accPosition", "accY"],
+                        ["accX", "velAngZ"], ["accX", "velAngZ"],
+                        ["accX", "velAngZ"], ["accX", "velAngZ"],
+                        ["accX" ,"accY", "velAngZ", "magX", "magY"], ["speed", "accX", "accY", "velAngZ", "magX"],
+                        ["accX" ,"accY", "velAngZ", "magX", "magY"], ["speed", "accX", "accY", "velAngZ", "magX"]]
+            if device_name == "smartphone":
+                clasifiers = clasifiers[::2]
+                features = features[::2]
+            else:
+                clasifiers = clasifiers[1::2]
+                features = features[1::2]
+
+            # Make filter kalman for all data
+            print("Start filter kalman")
+            df_filtered = data_filter(df)
+            print("End filter kalman")
+
+            # Find near crashes
+            near_crashes, near_crashes_df = find_near_crashes(df_filtered, clasifiers, features, windows_size, register_number)
+            len_s_nc = [len(x) for x in near_crashes]
+            print("\nNear crash select before check size of data (tamaño {}):\n{}"
+                .format(len_s_nc, near_crashes))
+
+            # Send data to firebase
+            near_crash_ref = db.reference('/').child(f'nearCrashes/{device_name}/{data_id}')
+            near_crash_response = {}
+            for i, near_crash in enumerate(near_crashes, 1):
+                start_near_crash = near_crash[0] + 20
+                end_near_crash = near_crashes_df.loc[near_crash].index.get_level_values('last')[-1] - 20
+
+                print(end_near_crash)
+
+                near_crash_lat_lng = df[["latitude","longitude"]].loc[df["id"].isin([start_near_crash, end_near_crash])].mean(axis=0)
+                time = df["timestamp"].loc[df["id"].isin([start_near_crash, end_near_crash])]
+                near_crash_data = near_crashes_df.loc[near_crash].droplevel(['last'])
+                index = near_crash_data.index.astype('int64')
+                near_crash_data.set_index(index, inplace=True)
+
+                near_crash_dict = {}
+                near_crash_dict["id_start"] = start_near_crash
+                near_crash_dict["id_end"] = end_near_crash
+                near_crash_dict["timestamp_start"] = str(time.iloc[0].to_pydatetime())
+                near_crash_dict["timestamp_end"] = str(time.iloc[1].to_pydatetime())
+                near_crash_dict["latitude"] = near_crash_lat_lng["latitude"]
+                near_crash_dict["longitude"] = near_crash_lat_lng["longitude"]
+                near_crash_dict["data"] = near_crash_data.to_dict()
+
+                near_crash_ref.child(f'nearCrash {i}').set(near_crash_dict)
+                near_crash_response = {**near_crash_response, 
+                    "nearCrash "+str(i):{
+                        "timestamp_start": near_crash_dict["timestamp_start"],
+                        "timestamp_end": near_crash_dict["timestamp_end"],
+                        "latitude": near_crash_dict["latitude"],
+                        "longitude": near_crash_dict["longitude"]
+                    }
+                }                
+            
+            ref.child('analyzed').set(True)
+            ref.child('nearCrashData').set(near_crash_response)
+            res = make_response(json.dumps(
+                {
+                    "code": 200,
+                    "result": "SUCCESSFUL ANALYSIS",
+                    "nearCrashData": near_crash_response
+                }),
+                200)
+            res.headers['Content-Type'] = 'application/json'
+            return res
+        except:
+            res = make_response(json.dumps({"code": 500, "result": "ANALYSIS FAILED"}), 500)
+            res.headers['Content-Type'] = 'application/json'
+            return res
     else:
-        clasifiers = clasifiers[1::2]
-        features = features[1::2]
+        res = make_response(json.dumps({"code": 404, "error": "NOT FOUND"}), 404)
+        res.headers['Content-Type'] = 'application/json'
+        return res
 
-    # Make filter kalman for all data
-    print("Start filter kalman")
-    df_filtered = data_filter(df)
-    print("End filter kalman")
-
-    # Find near crashes
-    near_crashes, near_crashes_df = find_near_crashes(df_filtered, clasifiers, features, windows_size, register_number)
-    len_s_nc = [len(x) for x in near_crashes]
-    print("\nNear crash select before check size of data (tamaño {}):\n{}"
-          .format(len_s_nc, near_crashes))
-
-    # Send data to firebase
-    near_crash_ref = db.reference('/').child(f'nearCrashes/{device_name}/{data_id}')
-    for i, near_crash in enumerate(near_crashes, 1):
-        start_near_crash = near_crash[0] + 20
-        end_near_crash = near_crashes_df.loc[near_crash].index.get_level_values('last')[-1] - 20
-
-        print(end_near_crash)
-
-        near_crash_lat_lng = df[["latitude","longitude"]].loc[df["id"].isin([start_near_crash, end_near_crash])].mean(axis=0)
-        time = df["timestamp"].loc[df["id"].isin([start_near_crash, end_near_crash])]
-        near_crash_data = near_crashes_df.loc[near_crash].droplevel(['last'])
-        index = near_crash_data.index.astype('int64')
-        near_crash_data.set_index(index, inplace=True)
-
-        near_crash_dict = {}
-        near_crash_dict["id_start"] = start_near_crash
-        near_crash_dict["id_end"] = end_near_crash
-        near_crash_dict["timestamp_start"] = str(time.iloc[0].to_pydatetime())
-        near_crash_dict["timestamp_end"] = str(time.iloc[1].to_pydatetime())
-        near_crash_dict["latitude"] = near_crash_lat_lng["latitude"]
-        near_crash_dict["longitude"] = near_crash_lat_lng["longitude"]
-        near_crash_dict["data"] = near_crash_data.to_dict()
-
-        near_crash_ref.child(f'nearCrash {i}').set(near_crash_dict)
+@app.route('/loadNearCrash', methods=["POST"])
+def getNearCrash():
+    try:
+        request_data = request.get_json()
+        trip_id = request_data['tripId']
+        if (trip_id == None):
+            res = make_response(json.dumps({"code": 404, "error": "NOT FOUND"}), 404)
+        else:
+            ref = db.reference('/tripList/{0}/nearCrashData'.format(trip_id))
+            near_crash_data = ref.get()
+            res = make_response(json.dumps(
+                {
+                    "code": 200,
+                    "result": "SUCCESSFUL ANALYSIS",
+                    "nearCrashData": near_crash_data
+                }),
+                200)
+        res.headers['Content-Type'] = 'application/json'
+        return res
+    except:
+        res = make_response(json.dumps({"code": 500, "result": "ANALYSIS FAILED"}), 500)
+        res.headers['Content-Type'] = 'application/json'
+        return res
 
 @app.route('/maps')
 def maps():

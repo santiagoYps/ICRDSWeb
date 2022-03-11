@@ -17,7 +17,7 @@
     <section class="hero is-primary is-small block">
         <div class="hero-body level">
             <div class="level-left">
-                <a class="level-item icon icon-image icon-back" href="/"></a>
+                <a class="level-item icon icon-image icon-back" href="/trips"></a>
                 <p class="level-item title">
                     Visualización de datos
                 </p>
@@ -35,17 +35,17 @@
                     <span class="icon icon-image icon-download">
                     </span>
                 </button>
-            </a>
-            <a href="{{ url_for('check_nearcrash', data_id=tripId) }}">
-                <button class="button is-info is-dark">
-                    <span>Comprobar <i>Near Crash</i></span>
-                    <span class="icon icon-image icon-ai"></span>
-                </button>
-            </a>
+            </a>            
+            <button id="check-near-crash-btn" class="button is-info is-dark">
+                <span>Comprobar <i>Near Crash</i></span>
+                <span class="icon icon-image icon-ai"></span>
+            </button>
+            
             </div>
         </div>
         
-        <div class="columns is-multiline is-centered box" id="trip-info" data-trip-id="{{ tripId }}">
+        <div class="columns is-multiline is-centered box" id="trip-info" data-trip-id="{{ tripId }}" 
+            data-analyzed="{{ analyzed if (analyzed) else False }}" data-device="{{device}}">
             <div class="column is-one-quarter-tablet is-one-fifth-desktop has-text-centered">
                 <div>
                     <p class="heading">Fecha:</p>
@@ -146,6 +146,75 @@
             </div>
         </div>
     </section>
+    <div id="modal-analysis" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <article class="message is-light">
+                <div class="message-header">
+                    <p>Deteccion de near crash</p>
+                </div>
+                <div class="message-body has-background-white">
+
+                    <div id="analysis-result" class="is-hidden">
+                        <div class="level level-near-crash-amount mx-auto">
+                            <div class="level-left">
+                                <div class="level-item">
+                                    <p class="has-text-info-dark is-size-6">Near-crashes detectados:</p>
+                                </div>
+                            </div>
+                            <div class="level-right">
+                                <div class="level-item">
+                                    <p class="is-size-4 has-text-info-dark"><strong id="near-crash-amount">0</strong></p>
+                                </div>
+                            </div>
+                        </div>    
+                        <div class="table-container">
+                            <table class="table mx-auto">
+                                <thead>
+                                    <tr>
+                                        <th><abbr title="Número">No.</abbr></th>
+                                        <th>Fecha y hora</th>
+                                        <th>Latitud</th>
+                                        <th>Longitud</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template id="near-crash-template">
+                                        <tr>
+                                            <th></th>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div id="analysis-loading" class="is-hidden">
+                        <p class="has-text-dark has-text-centered">
+                            Detectando near crashes. Esto puede tomar varios minutos
+                        </p>
+                        <progress class="progress is-small is-info mt-2 analysis-loading" max="100">15%</progress>
+                    </div>
+
+                    <div id="analysis-failed-msg" class="is-hidden">
+                        <p class="has-text-danger mx-auto">Ocurrió un error durante el analisis de los datos</p>
+                    </div>
+
+                    <div class="buttons mt-5">
+                        <a href="/maps">
+                            <button class="button is-info is-small" data-go-to-map>Ir a mapa</button>
+                        </a>
+                        <button class="button is-light is-small" data-ok>Ok</button>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
 </body>
 
 <script src="/static/js/charts.js"></script>
