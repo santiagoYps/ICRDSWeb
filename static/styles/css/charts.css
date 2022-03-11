@@ -33,6 +33,16 @@
   animation: spin 1s linear infinite;
 }
 
+.analysis-loading {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.level-near-crash-amount {
+  width: 70%;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
