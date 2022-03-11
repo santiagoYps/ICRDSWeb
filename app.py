@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 from turtle import width
 from xml.dom.minidom import parseString
 
@@ -511,6 +512,8 @@ def check_nearcrash():
     """
     if request.method == 'POST':
         try:
+            now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            print(f"Machine Learning - - [{now}] \"Downloading data\"")
             request_data = request.get_json()
             data_id = request_data['tripId']
             # Get trip info from firebase
@@ -523,10 +526,16 @@ def check_nearcrash():
             ref_trip = db.reference('/tripData/'+ device_name + "/" + data_id)
             # Transform json to dataframe
             firebase_data = ref_trip.get()
+            now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            print(f"Machine Learning - - [{now}] \"Downloaded data\"")
+            
             df = create_df(firebase_data)
 
+            now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            print(f"Machine Learning - - [{now}] \"DataFrame created\"")
+
             # TODO: Post Processing Optimizer Parameters maybe optimize
-            max_standby = 20 # The max number of captured data with the car stoped
+            max_standby = 150 # The max number of captured data with the car stoped
             windows_size = 40 # The size of the sliding window
             register_number = 50 # The minimum number of records to define a near crash
 
@@ -560,24 +569,35 @@ def check_nearcrash():
                 features = features[1::2]
 
             # Make filter kalman for all data
-            print("Start filter kalman")
+            now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            print(f"Machine Learning - - [{now}] \"Starting Kalman Filter\"")
+
             df_filtered = data_filter(df)
-            print("End filter kalman")
+
+            now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            print(f"Machine Learning - - [{now}] \"Kalman filter finished\"")
 
             # Find near crashes
+            now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            print(f"Machine Learning - - [{now}] \"Starting Machine Learning\"")
+
             near_crashes, near_crashes_df = find_near_crashes(df_filtered, clasifiers, features, windows_size, register_number)
-            len_s_nc = [len(x) for x in near_crashes]
+
+            now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            print(f"Machine Learning - - [{now}] \"Machine Learning finished\"")
+            """len_s_nc = [len(x) for x in near_crashes]
             print("\nNear crash select before check size of data (tamaño {}):\n{}"
-                .format(len_s_nc, near_crashes))
+                .format(len_s_nc, near_crashes))"""
 
             # Send data to firebase
+            now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            print(f"Machine Learning - - [{now}] \"Sending near crash data\"")
+
             near_crash_ref = db.reference('/').child(f'nearCrashes/{device_name}/{data_id}')
             near_crash_response = {}
             for i, near_crash in enumerate(near_crashes, 1):
                 start_near_crash = near_crash[0] + 20
                 end_near_crash = near_crashes_df.loc[near_crash].index.get_level_values('last')[-1] - 20
-
-                print(end_near_crash)
 
                 near_crash_lat_lng = df[["latitude","longitude"]].loc[df["id"].isin([start_near_crash, end_near_crash])].mean(axis=0)
                 time = df["timestamp"].loc[df["id"].isin([start_near_crash, end_near_crash])]
@@ -614,6 +634,10 @@ def check_nearcrash():
                 }),
                 200)
             res.headers['Content-Type'] = 'application/json'
+
+            now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            print(f"Machine Learning - - [{now}] \"Near crash data sent\"")
+
             return res
         except:
             res = make_response(json.dumps({"code": 500, "result": "ANALYSIS FAILED"}), 500)
