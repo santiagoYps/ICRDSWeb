@@ -66,20 +66,34 @@ async function makeRequest(map, device, route) {
         "device": device,
         "route": route,
     }
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(requestData)
         }, 3000);
-    })
+    })*/
 
-    // const response = await fetch('/endpoint', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(requestData)
-    // });
-    // return response.json(); 
+    const response = await fetch('/maps', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+    });
+    const graphJSON = await response.json();
+    console.log(graphJSON);
+
+    graphic(graphJSON);
+    document.getElementById('map').classList.remove('is-invisible');
+    // hide loading
+}
+
+function graphic(graphJSON){
+    var data = graphJSON.data;
+    console.log(data);
+    var layout = graphJSON.layout;
+    layout["margin"] = {r: 0, l: 0, t: 0, b: 0}
+    var config = {responsive: true};
+    Plotly.newPlot('map', data, layout, config);
 }
 
 function showLoadingMsg(isLoading) {

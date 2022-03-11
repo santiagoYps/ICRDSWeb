@@ -64,6 +64,19 @@ def create_df(firebase_data):
         df['eventClass'] = df['eventClass'].astype('int64')
     return df
 
+def create_near_crash_df(firebase_data):
+    if isinstance(firebase_data, dict):
+        remove_data = lambda sub: { key1: remove_data(val1) if isinstance(val1, dict) else val1 # Delete near crash data because to print map this is not necesary
+                      for key1, val1 in sub.items() if key1 != 'data'}
+        res = remove_data(firebase_data)
+    else:
+        print("Firebase return the data like list type")
+        res = 0
+    rows = list(filter(None, res.values())) if isinstance(res, dict) else filter(None, res)
+    # Create a data frame and set index by id
+    df = pd.json_normalize(rows)
+    return df
+
 def update_layout(fig, chart_title:str, **kwargs):
     """Update layout for every chart
 
@@ -579,28 +592,44 @@ def check_nearcrash(data_id):
 
         near_crash_ref.child(f'nearCrash {i}').set(near_crash_dict)
 
-@app.route('/maps')
+@app.route('/maps', methods=["GET", "POST"])
 def maps():
-    #TODO: to add in the show map part
-    #TODO: El codigo solo sirve en el caso de que se seleccione mostrar una ruta en especifico, para otro caso traer todas las rutas
-    ref_near_crashes = db.reference('/nearCrashes/smartphone/-Mu8hzXuOkhFAfcvId85') # TODO: check device and route id
-    firebase_near_crash_data = ref_near_crashes.get()
+    if request.method == 'GET':
+        return render_template('maps.html')
 
-    if isinstance(firebase_near_crash_data, dict):
-        remove_data = lambda sub: { key1: remove_data(val1) if isinstance(val1, dict) else val1 # Delete near crash data because to print map this is not necesary
-                      for key1, val1 in sub.items() if key1 != 'data'}
-        res = remove_data(firebase_near_crash_data)
+    elif request.method == 'POST':
+        request_data = request.get_json()
+        map_type = request_data['mapType']
+        device = request_data['device']
+        route = request_data['route']
+        
+        # Get near crash info from firebase
+        if route == 'all':
+            ref_routes = db.reference(f'/nearCrashes/{device}')
+            firebase_routes = ref_routes.get()
+            data = []
+            for key, value in firebase_routes.items():
+                data.append(create_near_crash_df(value))
+            df = pd.concat(data, ignore_index=True)
+        else:
+            ref_near_crashes = db.reference(f'/nearCrashes/{device}/{route}')
+            firebase_near_crash_data = ref_near_crashes.get()
+            df = create_near_crash_df(firebase_near_crash_data)
+
+        df['Duración Evento'] = df['id_end'] - df['id_start']
+        
+        # Define the map type
+        if map_type == 'heat-map':
+            fig = px.density_mapbox(df, lat='latitude', lon='longitude', z='Duración Evento', 
+                        radius=10, zoom=12,
+                        mapbox_style="open-street-map", color_continuous_scale='pinkyl')
+        else: # scatter map
+            fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", size="Duración Evento",
+                        hover_name="timestamp_start", size_max=15, zoom=12,
+                        mapbox_style="open-street-map", color_continuous_scale='pinkyl')
+
+        graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        return graphJSON
+
     else:
-        print("Firebase return the data like list type")
-        res = 0
-    print(res)
-    rows = list(filter(None, res.values())) if isinstance(res, dict) else filter(None, res)
-    # Create a data frame and set index by id
-    df = pd.json_normalize(rows)
-    df['sliding_window_number'] = df['id_end'] - df['id_start']
-    fig = px.density_mapbox(df, lat='latitude', lon='longitude', z='sliding_window_number', radius=10,
-                        center=dict(lat=0, lon=180), zoom=0,
-                        mapbox_style="open-street-map")
-
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template('maps.html', graphJSON=graphJSON)
+        abort(404)
