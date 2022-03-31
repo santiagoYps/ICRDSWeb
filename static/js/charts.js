@@ -160,9 +160,14 @@ function parseAnalysisResults(data) {
         analysisResult.querySelector('#near-crash-amount').textContent = Object.keys(data.nearCrashData).length;
         let tBody = analysisResult.querySelector("tbody");
         let template = analysisResult.querySelector('#near-crash-template');
-    
-        for (nearCrashKey in data.nearCrashData){
-            const nearCrash = data.nearCrashData[nearCrashKey]        
+        let keys = Object.keys(data.nearCrashData).map( k => 
+            Number(k.split(' ')[1])
+        );
+        keys = keys.sort((a,b) => a - b);
+
+        for (nearCrashKey of keys){
+            nearCrashKey = 'nearCrash ' + nearCrashKey;
+            const nearCrash = data.nearCrashData[nearCrashKey]
             let th = template.content.querySelector("th");
             th.textContent = nearCrashKey;
     
