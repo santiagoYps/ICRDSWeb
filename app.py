@@ -540,10 +540,11 @@ def check_nearcrash():
             register_number = 50 # The minimum number of records to define a near crash
 
             # TODO: before filter is need to manage the offset of the data, for this reason in the experiments we need to make a standby time
-            var_with_offset = ["accY","accX"]
+            """var_with_offset = ["accY","accX"]
             for var_offset in var_with_offset:
                 offset = df.iloc[:max_standby][var_offset].mean()
                 df[var_offset] = df[var_offset] - offset
+            """
 
             df["id"] = df.index
             df.reset_index(drop=True, inplace=True)
@@ -700,13 +701,13 @@ def maps():
         
         # Define the map type
         if map_type == 'heat-map':
-            fig = px.density_mapbox(df, lat='latitude', lon='longitude', z='Duración Evento', 
+            fig = px.density_mapbox(df, lat='latitude', lon='longitude',
                         radius=10, zoom=12,
-                        mapbox_style="open-street-map", color_continuous_scale='pinkyl')
+                        mapbox_style="open-street-map", color_continuous_scale='Purples')
         else: # scatter map
-            fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", size="Duración Evento",
-                        hover_name="timestamp_start", size_max=15, zoom=12,
-                        mapbox_style="open-street-map", color_continuous_scale='pinkyl')
+            fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", size = None,
+                        hover_name="timestamp_start", zoom=12,
+                        mapbox_style="open-street-map", color_continuous_scale='Purples')
 
         graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
         return graphJSON
