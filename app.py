@@ -693,20 +693,35 @@ def maps():
                 data.append(create_near_crash_df(value))
             df = pd.concat(data, ignore_index=True)
         else:
-            ref_near_crashes = db.reference(f'/nearCrashes/{device}/{route}')
-            firebase_near_crash_data = ref_near_crashes.get()
-            df = create_near_crash_df(firebase_near_crash_data)
+            ref_trip = db.reference(f'/tripList')
+            firebase_query = ref_trip \
+                .order_by_child('route').equal_to(route) \
+                .get()
+
+            if (firebase_query):
+                data = []
+                for key, values in firebase_query.items():
+                    if "analyzed" in values:
+                        ref_routes = db.reference(f'/nearCrashes/{device}/{key}')
+                        firebase_data = ref_routes.get()
+                        data.append(create_near_crash_df(firebase_data))
+                        df = pd.concat(data, ignore_index=True)
+                    else:
+                        return {"error": "404"}
+            else:
+                return {"error": "404"}
 
         df['Duración Evento'] = df['id_end'] - df['id_start']
         
         # Define the map type
         if map_type == 'heat-map':
             fig = px.density_mapbox(df, lat='latitude', lon='longitude',
-                        radius=10, zoom=12,
-                        mapbox_style="open-street-map", color_continuous_scale='Purples')
+                        radius=15, zoom=12, opacity=0.9,
+                        mapbox_style="carto-positron", color_continuous_scale='Bluyl')
         else: # scatter map
-            fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", size = None,
-                        hover_name="timestamp_start", zoom=12,
+            df['z'] = 100
+            fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", size = "z",
+                        hover_name="timestamp_start", size_max=10, zoom=12,
                         mapbox_style="open-street-map", color_continuous_scale='Purples')
 
         graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)

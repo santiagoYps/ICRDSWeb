@@ -79,10 +79,13 @@ async function makeRequest(map, device, route) {
         },
         body: JSON.stringify(requestData)
     });
-    const graphJSON = await response.json();
-    console.log(graphJSON);
-
-    graphic(graphJSON);
+    const res = await response.json();
+    console.log(res);
+    if (res.error){
+        alert("Datos no disponibles");
+    } else {
+        graphic(res);
+    }
     document.getElementById('map').classList.remove('is-invisible');
     // hide loading
 }
