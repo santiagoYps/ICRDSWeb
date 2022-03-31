@@ -14,6 +14,13 @@
   cursor: pointer;
 }
 
+.icon-back {
+  margin-right: 10px;
+  width: 2rem;
+  height: 2rem;
+  background-image: url(../../icons/back.png);
+}
+
 .icon-delete {
   background-image: url(../../icons/delete.png);
 }

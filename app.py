@@ -362,6 +362,19 @@ def find_near_crashes(df_filtered, clasifiers, features, windows_size=40, regist
 def home():
     return render_template('home.html')
 
+def orderTripList(newTrips):
+    # Str to Date
+    for v in newTrips.values():
+        v['date'] = datetime.timestamp( datetime.strptime(v['date'], "%d-%b-%Y %H:%M") )
+    
+    # Order by date 
+    orderedTrips = dict(sorted(newTrips.items(), key=lambda item: item[1]['date'], reverse=True))
+    
+    # Date to str. Format 23-Jan-2022 18:43	
+    for v in orderedTrips.values():
+        v['date'] = datetime.strftime( datetime.fromtimestamp(v['date']), "%d-%b-%Y %H:%M")
+    return orderedTrips
+    
 
 @app.route("/trips")
 def query_trips():
@@ -372,9 +385,11 @@ def query_trips():
     """
     ref = db.reference('/tripList')
     tripList = ref.get()
+    tripList = {} if (tripList == None) else tripList
+    
     data = {
         'title': 'Información de trayectos',
-        'trips': {} if (tripList == None) else tripList
+        'trips': orderTripList(tripList.copy())
     }
     return render_template('trips.html', **data)
 
