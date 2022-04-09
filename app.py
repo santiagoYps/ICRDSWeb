@@ -722,8 +722,11 @@ def maps():
                         data.append(create_near_crash_df(firebase_data))
                         df = pd.concat(data, ignore_index=True)
                     else:
-                        return {"error": "404"}
+                        continue
             else:
+                return {"error": "404"}
+            
+            if df.empty:
                 return {"error": "404"}
 
         df['Duración Evento'] = df['id_end'] - df['id_start']
