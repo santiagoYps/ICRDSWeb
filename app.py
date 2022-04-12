@@ -1,5 +1,5 @@
 import json
-import os
+import sys
 from datetime import datetime
 from turtle import width
 from xml.dom.minidom import parseString
@@ -700,36 +700,36 @@ def maps():
         route = request_data['route']
         
         # Get near crash info from firebase
-        if route == 'all':
-            ref_routes = db.reference(f'/nearCrashes/{device}')
-            firebase_routes = ref_routes.get()
-            data = []
-            for key, value in firebase_routes.items():
-                data.append(create_near_crash_df(value))
-            df = pd.concat(data, ignore_index=True)
-        else:
-            ref_trip = db.reference(f'/tripList')
-            firebase_query = ref_trip \
-                .order_by_child('route').equal_to(route) \
-                .get()
-
-            if (firebase_query):
+        try:
+            if route == 'all':
+                ref_routes = db.reference(f'/nearCrashes/{device}')
+                firebase_routes = ref_routes.get()
                 data = []
-                for key, values in firebase_query.items():
-                    if "analyzed" in values:
-                        ref_routes = db.reference(f'/nearCrashes/{device}/{key}')
-                        firebase_data = ref_routes.get()
-                        data.append(create_near_crash_df(firebase_data))
-                        df = pd.concat(data, ignore_index=True)
-                    else:
-                        continue
+                for key, value in firebase_routes.items():
+                    data.append(create_near_crash_df(value))
+                df = pd.concat(data, ignore_index=True)
             else:
-                return {"error": "404"}
-            
-            if df.empty:
-                return {"error": "404"}
+                ref_trip = db.reference(f'/tripList')
+                firebase_query = ref_trip \
+                    .order_by_child('route').equal_to(route) \
+                    .get()
 
-        df['Duración Evento'] = df['id_end'] - df['id_start']
+                if (firebase_query):
+                    data = []
+                    for key, values in firebase_query.items():
+                        if (values["analyzed"]) and (values['device'].lower() == device):
+                            ref_routes = db.reference(f'/nearCrashes/{device}/{key}')
+                            firebase_data = ref_routes.get()
+                            data.append(create_near_crash_df(firebase_data))
+                        else:
+                            continue
+                    df = pd.concat(data, ignore_index=True)
+                else:
+                    return {"error": "404"}
+        except Exception:
+            e = sys.exc_info()[1]
+            print(e.args[0])
+            return {'error': "404"}
         
         # Define the map type
         if map_type == 'heat-map':
