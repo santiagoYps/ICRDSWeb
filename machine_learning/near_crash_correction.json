@@ -1,4 +1,5 @@
-{"smartphone_02-Feb-2022-20-32_aceleración repentina_Data-Mv2OJUr9aMogCGLLtN3.csv": {
+[
+{"Mv2OJUr9aMogCGLLtN3": {
     "add_near_crash": {
       "min_ID": [41242, 41351, 41737],
       "max_ID": [41265, 41376, 41769]
@@ -14,10 +15,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-31_cambio de línea agresivo derecha_Data-Mv2Nk_4aV4M_KufahA0.csv": {
+  "Mv2Nk_4aV4M_KufahA0": {
     "add_near_crash": {
       "min_ID": [41045],
       "max_ID": [41076]
@@ -29,10 +30,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-30_cambio de línea agresivo derecha_Data-Mv2NIygZ9Lhr_sPsKy6.csv": {
+  "Mv2NIygZ9Lhr_sPsKy6": {
     "add_near_crash": {
       "min_ID": [40810],
       "max_ID": [40840]
@@ -44,10 +45,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-28_cambio de línea agresivo derecha_Data-Mv2N7NHrCFwdhHsnNZ0.csv": {
+  "Mv2N7NHrCFwdhHsnNZ0": {
     "add_near_crash": {
       "min_ID": [40125, 40210],
       "max_ID": [40171, 40255]
@@ -59,10 +60,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-26_cambio de línea agresivo derecha_Data-Mv2MrzIVJOQsCqDJHcb.csv": {
+  "Mv2MrzIVJOQsCqDJHcb": {
     "add_near_crash": {
       "min_ID": [39281, 39412],
       "max_ID": [39327, 39460]
@@ -74,10 +75,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-23_cambio de línea agresivo izquierda_Data-Mv2MemmvWzydRwVTgDS.csv": {
+  "Mv2MemmvWzydRwVTgDS": {
     "add_near_crash": {
       "min_ID": [38941],
       "max_ID": [38970]
@@ -89,19 +90,19 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-22_cambio de línea agresivo izquierda_Data-Mv2MN6xv2W3Rv1Rmb_Z.csv": {
+  "Mv2MN6xv2W3Rv1Rmb_Z": {
     "add_near_crash": {
       "min_ID": [38462],
       "max_ID": [38509]
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-21_cambio de línea agresivo izquierda_Data-Mv2LixfwEokL4QCgN_p.csv": {
+  "Mv2LixfwEokL4QCgN_p": {
     "add_near_crash": {
       "min_ID": [37900, 37993],
       "max_ID": [37947, 38050]
@@ -113,10 +114,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-19_cambio de línea agresivo izquierda_Data-Mv2L_EBJR_gDU3LpwVs.csv": {
+  "Mv2L_EBJR_gDU3LpwVs": {
     "add_near_crash": {
       "min_ID": [37480],
       "max_ID": [37525]
@@ -132,10 +133,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-15_giro izquierdo agresivo_Data-Mv2KZyC2nSbvYeWyEmh.csv": {
+  "Mv2KZyC2nSbvYeWyEmh": {
     "add_near_crash": {
       "min_ID": [37146],
       "max_ID": [37212]
@@ -151,10 +152,10 @@
       }
     }
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-14_giro izquierdo agresivo_Data-Mv2JuPQFlZdPc9e8f1U.csv": {
+  "Mv2JuPQFlZdPc9e8f1U": {
     "add_near_crash": {
       "min_ID": [36472],
       "max_ID": [36512]
@@ -170,10 +171,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-14_giro izquierdo agresivo_Data-Mv2JXMh1X_V30cbr0Mw.csv": {
+  "Mv2JXMh1X_V30cbr0Mw": {
     "add_near_crash": {
       "min_ID": [36157],
       "max_ID": [36202]
@@ -185,10 +186,10 @@
       }
     }
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-11_giro derecho agresivo_Data-Mv2JBgPWQPh3YScpKb3.csv": {
+  "Mv2JBgPWQPh3YScpKb3": {
     "add_near_crash": {
       "min_ID": [35675],
       "max_ID": [35714]
@@ -204,10 +205,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-08_giro derecho agresivo_Data-Mv2IT2Zlivu4dCGr-_h.csv": {
+  "Mv2IT2Zlivu4dCGr-_h": {
     "add_near_crash": {
       "min_ID": [35036],
       "max_ID": [35078]
@@ -223,10 +224,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-08_giro derecho agresivo_Data-Mv2HcS-UQTGljMc2hun.csv": {
+  "Mv2HcS-UQTGljMc2hun": {
     "add_near_crash": {
       "min_ID": [34649],
       "max_ID": [34699]
@@ -242,10 +243,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-07_frenada repentina_Data-Mv2GkS5qm4edjQ9DFUt.csv": {
+  "Mv2GkS5qm4edjQ9DFUt": {
     "add_near_crash": {
       "min_ID": [34369],
       "max_ID": [34414]
@@ -257,10 +258,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-05_frenada repentina_Data-Mv2GBn8gMBZPF-trJkU.csv": {
+  "Mv2GBn8gMBZPF-trJkU": {
     "add_near_crash": {
       "min_ID": [33922, 34072],
       "max_ID": [33942, 34098]
@@ -272,10 +273,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-04_frenada repentina_Data-Mv2FX62bOlZJlm8VJJx.csv": {
+  "Mv2FX62bOlZJlm8VJJx": {
     "add_near_crash": {
       "min_ID": [33510],
       "max_ID": [33545]
@@ -287,10 +288,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-01_frenada repentina_Data-Mv2EUSpYPrGpMG3qjaD.csv": {
+  "Mv2EUSpYPrGpMG3qjaD": {
     "add_near_crash": {
       "min_ID": [33045],
       "max_ID": [33071]
@@ -302,10 +303,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-20-00_aceleración repentina_Data-Mv1kHL-lY_3iTVHFvrQ.csv": {
+  "Mv1kHL-lY_3iTVHFvrQ": {
     "add_near_crash": {
       "min_ID": [32527, 32646],
       "max_ID": [32551, 32671]
@@ -317,10 +318,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "smartphone_02-Feb-2022-19-59_aceleración repentina_Data-Mv1jxE4ZYJvJ9AVKae1.csv": {
+  "Mv1jxE4ZYJvJ9AVKae1": {
     "add_near_crash": {
       "min_ID": [32177],
       "max_ID": [32224]
@@ -332,10 +333,10 @@
       }
     } 
   }
-}
+},
 
 {
-  "raspberry_02-Feb-2022-19-57_aceleración repentina_Data-Muy3Rwan4A9AhGjSY_j.csv": {
+  "Muy3Rwan4A9AhGjSY_j": {
     "add_near_crash": {
       "min_ID": [4259],
       "max_ID": [4308]
@@ -361,10 +362,10 @@
       }
     }
   }
-}
+},
 
 {
-  "raspberry_02-Feb-2022-19-58_aceleración repentina_Data-Mv1lsdW8oLkQkP2XcI9.csv": {
+  "Mv1lsdW8oLkQkP2XcI9": {
     "add_near_crash": {
       "min_ID": [4727],
       "max_ID": [4784]
@@ -376,10 +377,10 @@
       }
     }
   }
-}
+},
 
 {
-  "raspberry_02-Feb-2022-19-59_aceleración repentina_Data-Mv1lxNTPcnt0_t3C724.csv": {
+  "Mv1lxNTPcnt0_t3C724": {
     "add_near_crash": {
       "min_ID": [5150],
       "max_ID": [5199]
@@ -391,10 +392,10 @@
       }
     }
   }
-}
+},
 
 {
-  "raspberry_02-Feb-2022-20-00_aceleración repentina_Data-Mv1m25ILfD2v20bDi5Q.csv": {
+  "Mv1m25ILfD2v20bDi5Q": {
     "add_near_crash": {
       "min_ID": [5461, 5579],
       "max_ID": [5487, 5601]
@@ -406,10 +407,10 @@
       }
     }
   }
-}
+},
 
 {
-  "raspberry_02-Feb-2022-20-02_frenada repentina_Data-Mv2E_1BnfkXOP6gRM1J.csv": {
+  "Mv2E_1BnfkXOP6gRM1J": {
     "add_near_crash": {
       "min_ID": [5934],
       "max_ID": [5983]
@@ -432,10 +433,10 @@
       }
     }
   }
-}
+},
 
 {
-  "raspberry_02-Feb-2022-20-04_frenada repentina_Data-Mv2Fjh23ZUv0zs8puNO.csv": {
+  "Mv2Fjh23ZUv0zs8puNO": {
     "add_near_crash": {
       "min_ID": [6384],
       "max_ID": [6423]
@@ -447,10 +448,10 @@
       }
     }
   }
-}
+},
 
 {
-  "raspberry_02-Feb-2022-20-05_frenada repentina_Data-Mv2GE5kuLbtayOKAADh.csv": {
+  "Mv2GE5kuLbtayOKAADh": {
     "add_near_crash": {
       "min_ID": [6877, 7028],
       "max_ID": [6900, 7051]
@@ -462,19 +463,19 @@
       }
     }
   }
-}
+},
 
 {
-  "raspberry_02-Feb-2022-20-07_frenada repentina_Data-Mv2GjLnIwNMl56-k3B4.csv": {
+  "Mv2GjLnIwNMl56-k3B4": {
     "add_near_crash": {
       "min_ID": [7501],
       "max_ID": [7549]
     }
   }
-}
+},
 
 {
-  "raspberry_02-Feb-2022-20-08_giro derecho agresivo_Data-Mv2HSOB7ABwlXlcqhJ8.csv": {
+  "Mv2HSOB7ABwlXlcqhJ8": {
     "add_near_crash": {
       "min_ID": [7798],
       "max_ID": [7840]
@@ -490,4 +491,546 @@
       }
     }
   }
+},
+
+{
+  "Mu8hbCkU1mWBMDFMxXM": {
+    "add_near_crash": {
+      "min_ID": [354, 1249],
+      "max_ID": [470, 1391]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": 320,
+        "offset": 0.903
+      }
+    } 
+  }
+},
+
+{
+  "Mu8hi0cBwFcdYjZjBGt" : {
+    "add_near_crash": {
+      "min_ID": [2187],
+      "max_ID": [2217]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": 2181,
+        "offset": 1.0305
+      }
+    } 
+  }
+},
+
+{
+  "Mu8hkmaURzvBiJ1M7HR" : {
+    "add_near_crash": {
+      "min_ID": [2871],
+      "max_ID": [2896]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": 2866,
+        "offset": 0.997
+      }
+    } 
+  }
+},
+
+{
+  "Mu8hlpX2q5OFyRdDEPR" : {
+    "add_near_crash": {
+      "min_ID": [3950],
+      "max_ID": [3963]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [4045, 4173],
+        "offset": 1.0817
+      }
+    } 
+  }
+},
+
+{
+  "Mu8hmYsKr0gDXTtH4_T": {
+    "add_near_crash": {
+      "min_ID": [5091],
+      "max_ID": [5123]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [4790, 4860],
+        "offset": 1.0506
+      }
+    } 
+  }
+},
+
+{
+  "Mu8hnG_OsdtnMCKUAdX": {
+    "add_near_crash": {
+      "min_ID": [5513],
+      "max_ID": [5546]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [5564, 5587],
+        "offset": 1.1489
+      }
+    }
+  }
+},
+
+{
+  "Mu8hns_8QMJT_dUfYdU": {
+    "add_near_crash": {
+      "min_ID": [5927],
+      "max_ID": [5959]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [5723],
+        "offset": 1.2375
+      }
+    }
+  }
+},
+
+{
+  "Mu8hoO79KoYrhfteErv": {
+    "add_near_crash": {
+      "min_ID": [6916, 6953, 7025, 7078, 7137, 7192, 7249, 7308, 7374 ],
+      "max_ID": [6927, 6961, 7035, 7092, 7150, 7206, 7272, 7331, 7393 ]
+    }
+  }
+},
+
+{
+  "Mu8hq8e9oRgJ8QzdQO7": {
+    "add_near_crash": {
+      "min_ID": [8163],
+      "max_ID": [8202]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [7472, 7825],
+        "offset": 1.1959736
+      },
+      "accX": {
+        "stand_by": [7472, 7825],
+        "offset": 0.36453537
+      }
+    }
+  }
+},
+
+{
+  "Mu8hqo5-zpKQj-enaeo": {
+    "add_near_crash": {
+      "min_ID": [8833],
+      "max_ID": [8876]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [8316, 8478],
+        "offset": 1.0376
+      },
+      "accX": {
+        "stand_by": [8316, 8478],
+        "offset": 0.357196
+      }
+    }
+  }
+},
+
+{
+  "Mu8hrOU8YXIjjTdqy7E": {
+    "add_near_crash": {
+      "min_ID": [9785],
+      "max_ID": [9820]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [9589, 9615],
+        "offset": 1.031517
+      },
+      "accX": {
+        "stand_by": [9618, 9640],
+        "offset": 0.2927
+      }
+    }
+  }
+},
+
+{
+  "Mu8hsZd_p_mSgXotuHD": {
+    "add_near_crash": {
+      "min_ID": [11255],
+      "max_ID": [11292]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [11020, 11070],
+        "offset": 1.0974962
+      }
+    }
+  }
+},
+
+{
+  "Mu8ht1cvr6sdTrBxjrE": {
+    "add_near_crash": {
+      "min_ID": [11724],
+      "max_ID": [11764]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [12020, 12135],
+        "offset": 0.9625
+      }
+    }
+  }
+},
+
+{
+  "Mu8htc5ZwKQ2CeOi9vC": {
+    "add_near_crash": {
+      "min_ID": [12520],
+      "max_ID": [12559]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [12365, 12372],
+        "offset": 1.102
+      }
+    }
+  }
+},
+
+{
+  "Mu8hwQcQ4pDRMYWDiqK":{
+    "add_near_crash": {
+      "min_ID": [12833],
+      "max_ID": [12864]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [12658, 12675],
+        "offset": 1.1508
+      }
+    }
+  }
+},
+
+{
+  "Mu8hxArWaxvmMTZL3YL": {
+    "add_near_crash": {
+      "min_ID": [13444],
+      "max_ID": [13484]
+    }
+  }
+},
+
+{
+  "Mu8hxkqg8sK6TjXkaxG": {
+    "add_near_crash": {
+      "min_ID": [13860, 14021, 14139],
+      "max_ID": [13919, 14079, 14195]
+    }
+  }
+},
+
+{
+  "Mu8hyMj45nyvhS3nr-W": {
+    "add_near_crash": {
+      "min_ID": [15107],
+      "max_ID": [15156]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [14697, 14888],
+        "offset": 1.05393
+      }
+    }
+  }
+},
+
+{
+  "Mu8hz2B3EFQiez_YqVP": {
+    "add_near_crash": {
+      "min_ID": [15493, 15654],
+      "max_ID": [15537, 15712]
+    }
+  }
+},
+
+{
+  "Mu8hzXuOkhFAfcvId85": {
+    "add_near_crash": {
+      "min_ID": [16813, 16891],
+      "max_ID": [16858, 16941]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [16376, 16489],
+        "offset":  1.294
+      }
+    }
+  }
+},
+
+{
+  "Mu8i-4UzIQ0uGWQHPlW": {
+    "add_near_crash": {
+      "min_ID": [17220, 17366],
+      "max_ID": [17272, 17412]
+    }
+  }
+},
+
+{
+  "Muy3Q2oTXSwbX4Xkp8f": {
+    "add_near_crash": {
+      "min_ID": [31291],
+      "max_ID": [31345]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [31062, 31264 ],
+        "offset": 1.4804
+      }
+    }
+  }
+},
+
+{
+  "Mv1jhGeVWb8RdpInpVm": {
+    "add_near_crash": {
+      "min_ID": [31791],
+      "max_ID": [31826]
+    },
+    "offset": {
+      "accY": {
+        "stand_by": [31675, 31756],
+        "offset": 1.542
+      }
+    }
+  }
+},
+
+{
+  "Mv2OBsiMjeYsWr6NjI-":{
+    "add_near_crash": {
+      "min_ID": [13930, 14048, 14174],
+      "max_ID": [13955, 14067, 14195]
+    }
+  }
+},
+
+{
+  "Mv2NjnReR0ap6oLLm_L": {
+    "add_near_crash": {
+      "min_ID": [13716],
+      "max_ID": [13751]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": [13789, 13817],
+        "offset": -1.5409
+      }
+    }
+  }
+},
+
+{
+  "Mv2NI8EB-OO2UcM0y90": {
+    "add_near_crash": {
+      "min_ID": [13471],
+      "max_ID": [13495]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": [13320, 13458],
+        "offset": -1.27909
+      }
+    }
+  }
+},
+
+{
+  "Mv2N4sqCOBh_ItfGkmE": {
+    "add_near_crash": {
+      "min_ID": [13052, 13139],
+      "max_ID": [13092, 13187]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": [12893, 13030],
+        "offset": -1.45244
+      }
+    }
+  }
+},
+
+{
+  "Mv2Mn1vBfoSLiFW3DBh": {
+    "add_near_crash": {
+      "min_ID": [12453, 12581],
+      "max_ID": [12501, 12647]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": [12271, 12447],
+        "offset": -1.281
+      }
+    }
+  }
+},
+
+{
+  "Mv2Mb788s0lYvuHjbpz": {
+    "add_near_crash": {
+      "min_ID": [12121],
+      "max_ID": [12154]
+    }
+  } 
+},
+
+{
+  "Mv2MKSGRnWKiAQnOt6X": {
+    "add_near_crash": {
+      "min_ID": [11643],
+      "max_ID": [11674]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": [11737, 11910],
+        "offset": -1.32049
+      }
+    }
+  }
+},
+
+{
+  "Mv2LjjP0SLKY6zw_7Y9": {
+    "add_near_crash": {
+      "min_ID": [11073, 11165],
+      "max_ID": [11118, 11214]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": [11278, 11416],
+        "offset": -1.802
+      }
+    }
+  }
+},
+
+{
+  "Mv2LMYtkG1kF19_Sfkm": {
+    "add_near_crash": {
+      "min_ID": [10639],
+      "max_ID": [10685]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": [10730, 10842],
+        "offset": -2.025
+      }
+    }
+  }
+},
+
+{
+  "Mv2KWwfC9rOulb8X-fO": {
+    "add_near_crash": {
+      "min_ID": [10222],
+      "max_ID": [10276]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": [9663, 9999],
+        "offset": -1.94575
+      },
+      "accY": {
+        "stand_by": [9769, 9880],
+        "offset": 0.8505
+      }
+    }
+  }
+},
+
+{
+  "Mv2JoflmGmLbEwyIi2a": {
+    "add_near_crash": {
+      "min_ID": [9538],
+      "max_ID": [9579]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": [9391, 9483],
+        "offset": -1.84772
+      }
+    }
+  }
+},
+
+{
+  "Mv2JJRm4Wr7hGezVRa4": {
+    "add_near_crash": {
+      "min_ID": [9245],
+      "max_ID": [9285]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": [8857, 8918],
+        "offset": -1.91787
+      },
+      "accY": {
+        "stand_by": [8859,8907],
+        "offset": 0.9334
+      }
+    }
+  }
+},
+
+{
+  "Mv2J5sXkAQlaBieponq": {
+    "add_near_crash": {
+      "min_ID": [8701],
+      "max_ID": [8745]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": [8537, 8601],
+        "offset": -1.40182
+      },
+      "accY": {
+        "stand_by": [8534, 8549],
+        "offset": 0.667418
+      }
+    }
+  }
+},
+
+{
+  "Mv2ISfQUC6sTST7r5vK": {
+    "add_near_crash": {
+      "min_ID": [8136],
+      "max_ID": [8165]
+    },
+    "offset": {
+      "accX": {
+        "stand_by": [7903, 7980],
+        "offset": -1.3864
+      },
+      "accY": {
+        "stand_by": [7903, 7957],
+        "offset": 0.6934
+      }
+    }
+  }
 }
+]
