@@ -550,16 +550,15 @@ def check_nearcrash():
             print(f"Machine Learning - - [{now}] \"DataFrame created\"")
 
             # TODO: Post Processing Optimizer Parameters maybe optimize
-            max_standby = 150 # The max number of captured data with the car stoped
             windows_size = 40 # The size of the sliding window
             register_number = 50 # The minimum number of records to define a near crash
 
             # TODO: before filter is need to manage the offset of the data, for this reason in the experiments we need to make a standby time
-            """var_with_offset = ["accY","accX"]
+            var_with_offset = ["accY","accX"]
             for var_offset in var_with_offset:
-                offset = df.iloc[:max_standby][var_offset].mean()
+                offset = df[var_offset].mean()
+                print(offset)
                 df[var_offset] = df[var_offset] - offset
-            """
 
             df["id"] = df.index
             df.reset_index(drop=True, inplace=True)
