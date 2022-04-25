@@ -426,7 +426,7 @@ def trip_details(id):
         # Get all trip data from firebase
         ref_trip = db.reference('/tripData/'+ str(trip['device']).lower() + "/" + str(id))
         firebase_data = ref_trip.get()
-            
+        
         # Transform json to dataframe if firebase returns a dict
         df = create_df(firebase_data)
         
@@ -712,11 +712,11 @@ def maps():
                 firebase_query = ref_trip \
                     .order_by_child('route').equal_to(route) \
                     .get()
-
+                #print(firebase_query)
                 if (firebase_query):
                     data = []
                     for key, values in firebase_query.items():
-                        if (values["analyzed"]) and (values['device'].lower() == device):
+                        if ("analyzed" in values.keys()) and (values['device'].lower() == device):
                             ref_routes = db.reference(f'/nearCrashes/{device}/{key}')
                             firebase_data = ref_routes.get()
                             data.append(create_near_crash_df(firebase_data))
