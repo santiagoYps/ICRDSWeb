@@ -333,7 +333,7 @@ def find_near_crashes(df_filtered, clasifiers, features, windows_size=40, regist
         # Make sliding window
         X, y = sliding_windows(df_filtered, f, windows_size)
         # Check near-crash
-        clf = load(str("./machine_learning/built_algorithms/"+c+".joblib"))
+        clf = load(str("./machine_learning/built_classifiers/"+c+".joblib"))
         y_predict = clf.predict(X.values)
         y_predict_proba = clf.predict_proba(X.values)[:,1]
         if (len(np.where(y_predict == 1.0)[0]) != 0):
