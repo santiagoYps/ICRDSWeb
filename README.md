@@ -34,6 +34,7 @@ It contains the access credentials to firebase, *for security reasons these cred
 created by you in your firebase client*, a [tutorial here](https://firebase.google.com/docs/admin/setup). The .env configuration file should look something like this
 (All information can be extracted from the file: "service-account-file.json"):
 ```bash
+#env
 TYPE="service_account"
 PROJECT_ID="YOUR_PROJECT_ID"
 PRIVATE_KEY_ID="YOUR_KEY_ID"
@@ -49,10 +50,10 @@ CLIENT_X509_CERT_URL="YOUR_CLIENT_X509_CERT_URL"
 ## Usage
 In your web browser type http://localhost:3000/ and start browsing the platform (the URL depends on the configuration made in .flaskenv).
 
-In In the ["machine_learning"](./machine_learning) folder are the jupyter files used in the development of the Machine Learning algorithm
+In the ["machine_learning"](./machine_learning) folder are the jupyter files used in the development of the Machine Learning algorithm
 
 ## Requirementes
 All libraries are specified in the [tesis.yml](./tesis.yml) file.
 
-# Authors adn Contact
+# Authors and Contact
 [Juan Jose Paredes Rosero](https://www.linkedin.com/in/juan-paredes-a624aa186/), [Santiago Felipe Yepes](https://www.linkedin.com/in/santiagoyps)
