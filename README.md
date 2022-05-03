@@ -16,10 +16,11 @@ In addition, it has the development of a Machine Learning model that allows clas
 
 ## Installation
 1. Clone repository.
-2. Install Conda on your machine.
-3. Install conda enviroment, run: `conda env create -f tesis.yml`, more info in [Conda Documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file).
-4. Active conda enviroment, run: `conda activate tesis`.
-5. Initialize Flask Application, run: `flask run`.
+2. Create a Realtime Database on Firebase, more info in [Firebase Documentation](https://firebase.google.com/docs/database)
+3. Install Conda on your machine.
+4. Install conda enviroment, run: `conda env create -f tesis.yml`, more info in [Conda Documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file).
+5. Active conda enviroment, run: `conda activate tesis`.
+6. Initialize Flask Application, run: `flask run`.
 
 ### Note:
 You need to setup your .flaskenv file and .env file, these should look like this:
