@@ -54,4 +54,4 @@ In In the ["machine_learning"](./machine_learning) folder are the jupyter files 
 All libraries are specified in the [tesis.yml](./tesis.yml) file.
 
 # Authors adn Contact
-[Juan Jose Paredes Rosero](https://www.linkedin.com/in/juan-paredes-a624aa186/), [Santiago Felipe Yepes](https://github.com/santiagoYps)
+[Juan Jose Paredes Rosero](https://www.linkedin.com/in/juan-paredes-a624aa186/), [Santiago Felipe Yepes](https://www.linkedin.com/in/santiagoyps)
