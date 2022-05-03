@@ -52,4 +52,4 @@ In your web browser type http://localhost:3000/ and start browsing the platform 
 All libraries are specified in the [tesis.yml](./tesis.yml) file.
 
 # Authors adn Contact
-[Juan Jose Paredes Rosero](https://www.linkedin.com/in/juan-paredes-a624aa186/), [Santiago Felipe Yepes]()
+[Juan Jose Paredes Rosero](https://www.linkedin.com/in/juan-paredes-a624aa186/), [Santiago Felipe Yepes](https://github.com/santiagoYps)
