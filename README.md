@@ -48,6 +48,8 @@ CLIENT_X509_CERT_URL="YOUR_CLIENT_X509_CERT_URL"
 ## Usage
 In your web browser type http://localhost:3000/ and start browsing the platform (the URL depends on the configuration made in .flaskenv).
 
+In In the ["machine_learning"](./machine_learning) folder are the jupyter files used in the development of the Machine Learning algorithm
+
 ## Requirementes
 All libraries are specified in the [tesis.yml](./tesis.yml) file.
 
