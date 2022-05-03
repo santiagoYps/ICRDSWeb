@@ -34,7 +34,7 @@ It contains the access credentials to firebase, *for security reasons these cred
 created by you in your firebase client*, a [tutorial here](https://firebase.google.com/docs/admin/setup). The .env configuration file should look something like this
 (All information can be extracted from the file: "service-account-file.json"):
 ```bash
-#env
+#.env
 TYPE="service_account"
 PROJECT_ID="YOUR_PROJECT_ID"
 PRIVATE_KEY_ID="YOUR_KEY_ID"
@@ -56,4 +56,5 @@ In the ["machine_learning"](./machine_learning) folder are the jupyter files use
 All libraries are specified in the [tesis.yml](./tesis.yml) file.
 
 # Authors and Contact
-[Juan Jose Paredes Rosero](https://www.linkedin.com/in/juan-paredes-a624aa186/), [Santiago Felipe Yepes](https://www.linkedin.com/in/santiagoyps)
+- [Juan Jose Paredes Rosero](https://www.linkedin.com/in/juan-paredes-a624aa186/)
+- [Santiago Felipe Yepes Chamorro](https://www.linkedin.com/in/santiagoyps)
