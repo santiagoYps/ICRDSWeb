@@ -14,6 +14,11 @@ In addition, it has the development of a Machine Learning model that allows clas
   <img src="https://bnz05pap001files.storage.live.com/y4md_A7qkxwriqyV03FGlBHUHULm0OQq82XopBRHmczPhPXz07lSCbr19XCQNgSXdgghk5RNYVJ8QhPP25ueB_PC73TTdsOETPERlNtva6fq9AV5HftqvK9mMJSWNj431dpreueOD66mFtQHMCbTNwfffh2Qdm9CaG95jEJzn4DIppRCx-hcHb8gQfVwG6GhjqS?width=1366&height=728&cropmode=none" width="250"></img>
 </p>
 
+## Paper
+_Yepes Chamorro, S.F.; Paredes Rosero, J.J.; Salazar-Cabrera, R.; Pachón de la Cruz, Á.; Madrid Molina, J.M. Design, Development and Validation of an Intelligent Collision Risk Detection System to Improve Transportation Safety: The Case of the City of Popayán, Colombia. Sustainability 2022, 14, 10087._
+
+**https://doi.org/10.3390/su141610087**
+
 ## Installation
 1. Clone repository.
 2. Create a Realtime Database on Firebase, more info in [Firebase Documentation](https://firebase.google.com/docs/database)
